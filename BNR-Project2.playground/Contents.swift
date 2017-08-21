@@ -89,3 +89,10 @@ default:
 	labelForSwitch = "Unknown";
 }
 print(labelForSwitch)
+
+
+//Time for tupples
+let myTupple = (404, "Not found");
+print(myTupple);
+print("Tupple: \(myTupple.0) - \(myTupple.1)")
+//print(myTupple.2); //-> Yields compiler error, since there are only 2 elements (0 and 1)
