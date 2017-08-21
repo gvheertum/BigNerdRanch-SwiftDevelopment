@@ -27,6 +27,16 @@ print(readerMessage);
 print(readerMessage2);
 
 
+var multiIfValue = 6;
+if(multiIfValue >= 0 && multiIfValue <= 10 && multiIfValue % 2 == 0)
+{
+	print("Number is between 0 and 10 and even");
+}
+//The if can also have cases (for example to check ranges)
+if case 0...10 = multiIfValue, multiIfValue % 2 == 0
+{
+	print("Check is basically the same, however the notation is different. Number is between 0 and 10 and even");
+}
 
 //var shortHandInt : int = 33; //There is no int alias for Integers
 //Note that the int is 64 bits in iOS, use the Int32 for specific 32 bits integers
@@ -73,7 +83,7 @@ var myIntNotInitialized : Int;
 
 let nrForSwitch : Int = 99;
 var labelForSwitch : String = "";
-switch (nrForSwitch)
+switch (nrForSwitch) //Funny thing: the break is not needed here
 {
 case 1:
 	labelForSwitch = "One";
@@ -96,3 +106,20 @@ let myTupple = (404, "Not found");
 print(myTupple);
 print("Tupple: \(myTupple.0) - \(myTupple.1)")
 //print(myTupple.2); //-> Yields compiler error, since there are only 2 elements (0 and 1)
+
+var myNamedTupple = (code: 404, message: "Not found")
+myNamedTupple.message = "The page was not found";
+print(myNamedTupple);
+
+let collectionOfNumbers = (1,2,6)
+switch(collectionOfNumbers)
+{
+case (1,2,6):
+	print("Hit all");
+case (1,_,_):
+	print("Hit the first");
+//case (1,_): //Error because the tupple definition is Int,Int,Int -> compared with Int,Int
+//	print("Hit the first");
+case let checkedNr:
+	print("Nr: \(checkedNr) not defined")
+}
