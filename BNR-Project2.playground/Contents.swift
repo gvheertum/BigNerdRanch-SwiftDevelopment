@@ -14,9 +14,13 @@ if(readerValue > 9000)
 {
 	readerMessage = "It's over 9000";
 }
+else if (readerValue > 8000)
+{
+	readerMessage = "It's not over 9000, but still quite high";
+}
 else
 {
-	readerMessage = "It's not over 9000, so it's safe?";
+	readerMessage = "It's not over 9000 and also not over 8000, so it's safe?";
 }
 readerMessage2 = readerValue > 9000 ? "It's over 9000" :  "It's not over 9000, so it's safe?";
 print(readerMessage);
@@ -60,3 +64,28 @@ myStrNotInitialized2 = "Value"; //
 
 var myIntNotInitialized : Int;
 //print(myIntNotInitialized); //Swift does not initialize integers to an explict 0 value, so even primitive types need to be initialized before using (this might depend on how the playground is treated, in .NET you don't need an initial value for class items, but in a function you DO need to specify the value explicitly)
+
+//########################################################################
+// Playing with switches
+// The switch needs to be exhaustive, throug a default or a let 
+// without where
+//########################################################################
+
+let nrForSwitch : Int = 99;
+var labelForSwitch : String = "";
+switch (nrForSwitch)
+{
+case 1:
+	labelForSwitch = "One";
+//case 2: mmm, multi cases are not allowed this way, we need to have them as a range
+//case 3:
+case 2, 3:
+	labelForSwitch = "A bit above one!";
+case 4...9:
+	labelForSwitch = "Quite a bit above one";
+case let notAnticipatedNumber where (notAnticipatedNumber < 100):
+	labelForSwitch = "This number \(notAnticipatedNumber) is not anticipated but still below 100 (switch val: \(nrForSwitch))";
+default:
+	labelForSwitch = "Unknown";
+}
+print(labelForSwitch)
