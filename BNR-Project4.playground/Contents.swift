@@ -43,3 +43,12 @@ print("equality: \(equal)"); //Swift doesn't care about the method the accented 
 
 print("Counts a1: \(accented.characters.count), a2: \(accented2.characters.count), a3: \(accented3.characters.count)"); //Char count is 1 in all cases (which makes sense since the combined scalar really is only one char
 
+//Indexes and ranges
+//You cannot just say 0...5 as range, you need to pull it from the string
+var lowerRange = myStr.startIndex;
+var upperRange = myStr.index(lowerRange, offsetBy: 4); //Get the first 5 chars (0 until and including 4 -> 5 chars)
+var range = lowerRange...upperRange; //(closed range)
+var substr = myStr[lowerRange...upperRange];
+var ltr = myStr[lowerRange]
+var ltr2 = myStr[upperRange]
+print(substr);
