@@ -4,6 +4,7 @@
 import Cocoa
 //########################################################################
 // Part II - Basics of Swift
+// Conditionals, control flow etc
 //########################################################################
 var readerValue : Int = 9001;
 var readerMessage : String = "";

@@ -1,7 +1,16 @@
 //: Playground - noun: a place where people can play
 //Big nerd Ranch - Swift development - Playground 5
 
-//Playing with optionals
+//Big nerd Ranch - Swift development - Playground 3
+
+import Cocoa
+//########################################################################
+// Part II - Basics of Swift
+// Conditionals, control flow etc
+//########################################################################
+
+//In this playground: Playing with optionals
+
 //Optionals are nil in Swift if not set. The null does not exist in Swift (or at least not for me at this moment ;) )
 
 import Cocoa

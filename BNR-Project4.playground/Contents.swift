@@ -3,10 +3,16 @@
 
 import Cocoa
 import Foundation
+
+//Big nerd Ranch - Swift development - Playground 3
+
+import Cocoa
 //########################################################################
 // Part II - Basics of Swift
-// Playing with strings
+// Conditionals, control flow etc
 //########################################################################
+
+// In this playground: playing with text and strings
 
 var myStr : String = "abc ABC Hello world! \u{1F60E}";
 for char : Character in myStr.characters

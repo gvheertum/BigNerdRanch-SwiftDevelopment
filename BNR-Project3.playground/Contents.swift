@@ -3,8 +3,11 @@
 import Cocoa
 //########################################################################
 // Part II - Basics of Swift
-// Loops
+// Conditionals, control flow etc
 //########################################################################
+
+//In this playground: loops (whoopiie)
+
 //Notes: The for i in cannot be used in (), this will yield an error
 
 //for (var i = 0; i < 10; i++) //Classic style if is removed in swift 3
