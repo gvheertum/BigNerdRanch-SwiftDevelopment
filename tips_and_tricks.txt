@@ -1,0 +1,4 @@
+Interesting finds and observations:
+
+- When you want to view details regarding a var, you can use alt-click (described as option-click in the book), this will show a popout with information about the variable (like the type).
+- In the menu Help -> Documentation and API reference you can find details regarding the language and libraries.
