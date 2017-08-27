@@ -179,3 +179,27 @@ rec.getArea();
 var p = Shape.point;
 p.getArea();
 
+
+//Enums and recursion
+//Swift takes enums to the next level :O
+
+indirect enum FamilyTree //When recursion is applied, flag the enum as indirect
+{
+	case noParentsKnown
+	case oneParentKnown(name : String, ancestors: FamilyTree)
+	case twoParentsKnown(fatherName: String, fatherAncestors: FamilyTree, motherName: String, motherAncestors: FamilyTree)
+}
+
+enum FamilyTreeSemiIndirect //Or at least flag the recursive parts as indirect
+{
+	case noParentsKnown
+	indirect case oneParentKnown(name : String, ancestors: FamilyTree)
+	indirect case twoParentsKnown(fatherName: String, fatherAncestors: FamilyTree, motherName: String, motherAncestors: FamilyTree)
+}
+
+var testFamily = FamilyTree.twoParentsKnown(
+	fatherName: "Bert", fatherAncestors: .noParentsKnown,
+	motherName: "Betsie", motherAncestors: .oneParentKnown(
+		name: "Ouwe Bertha", ancestors: .noParentsKnown
+	));
+print(testFamily);
