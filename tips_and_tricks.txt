@@ -4,6 +4,10 @@ Interesting finds and observations:
 - When you want to view details regarding a var, you can use alt-click (described as option-click in the book), this will show a popout with information about the variable (like the type).
 - In the menu Help -> Documentation and API reference you can find details regarding the language and libraries.
 
+* General
+- For readability numeric values can be split with a 1000 separator (_) -> 9_001
+- Naming conventions seem to prefer lowerCamelCase (e.g. enum values, struct properties) 
+
 * Enumerations
 - Enums are not inheriting from any type by default (unlike .net which inherits from int by default)
 - Enums funcs are by default immutable, however you can enalbe this by flagging the function as mutating
@@ -12,3 +16,7 @@ Interesting finds and observations:
 - The associated values cannot be read directly from variables (since they are of the enum type)
 - Enums can also have recursion (which requires you to flag the enum or at least the recursive bits as inderect), the compiler otherwise needs to allocate enums in your enum without knowing the depth of the enum tree
 - Although enum functions can be quite useful, the full recursion I would prefer doing in classes I think
+
+* Struct
+- Structs are initialized by StructName(). The new operator cannot be used.
+- Struct funcs are by default not allowed to mutate data, like the enums they need to be flagged as mutating
