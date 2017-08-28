@@ -15,7 +15,7 @@ class Monster
 	{
 		if(self.town != nil)
 		{
-			print("I, the monster also known as \(name) am going to scare the people of \(self.town?.name)");
+			print("I, the monster also known as \(name) am going to scare the people of \(self.town?.name ?? "")");
 		}
 		else
 		{
@@ -26,5 +26,10 @@ class Monster
 	final func sayName()
 	{
 		print("Hi I am \(self.name)")
+	}
+	
+	class func makeNoise() -> Void
+	{
+		print("BWAARGH...");
 	}
 }

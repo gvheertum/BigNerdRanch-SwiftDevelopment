@@ -24,6 +24,9 @@ zombie.name = "Bob the brainless zombie";
 zombie.town = myTown;
 monstersToUnleash.append(zombie);
 
+//Class/static functions
+Monster.makeNoise();
+Zombie.makeNoise();
 
 //Go monsters!
 func unleashTheMonsters(_ monsters : [Monster])
