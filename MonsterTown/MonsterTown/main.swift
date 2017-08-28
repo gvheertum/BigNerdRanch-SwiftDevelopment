@@ -7,6 +7,11 @@
 //
 
 import Foundation
+/* Greeter logic -> used for the exploration of mutation function on structs
+var greeter = Greeter();
+greeter.doGreetingWork();
+*/
+
 
 var myTown : Town = Town();
 myTown.printStatus();

@@ -11,6 +11,7 @@
 		98757EA11F531E9800855068 /* Town.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98757EA01F531E9800855068 /* Town.swift */; };
 		98757EA31F545EEA00855068 /* Monster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98757EA21F545EEA00855068 /* Monster.swift */; };
 		98757EA51F54603600855068 /* Zombie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98757EA41F54603600855068 /* Zombie.swift */; };
+		98757EA71F5469A900855068 /* Greeter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98757EA61F5469A900855068 /* Greeter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -31,6 +32,7 @@
 		98757EA01F531E9800855068 /* Town.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Town.swift; sourceTree = "<group>"; };
 		98757EA21F545EEA00855068 /* Monster.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Monster.swift; sourceTree = "<group>"; };
 		98757EA41F54603600855068 /* Zombie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Zombie.swift; sourceTree = "<group>"; };
+		98757EA61F5469A900855068 /* Greeter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Greeter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +69,7 @@
 				98757EA01F531E9800855068 /* Town.swift */,
 				98757EA21F545EEA00855068 /* Monster.swift */,
 				98757EA41F54603600855068 /* Zombie.swift */,
+				98757EA61F5469A900855068 /* Greeter.swift */,
 			);
 			path = MonsterTown;
 			sourceTree = "<group>";
@@ -131,6 +134,7 @@
 			files = (
 				98757E9A1F531DAE00855068 /* main.swift in Sources */,
 				98757EA51F54603600855068 /* Zombie.swift in Sources */,
+				98757EA71F5469A900855068 /* Greeter.swift in Sources */,
 				98757EA31F545EEA00855068 /* Monster.swift in Sources */,
 				98757EA11F531E9800855068 /* Town.swift in Sources */,
 			);

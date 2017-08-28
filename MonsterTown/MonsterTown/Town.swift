@@ -10,7 +10,7 @@ import Foundation
 
 struct Town
 {
-	var name = "Smallvile";
+	let name = "Smallvile";
 	var population = 9_001;
 	var numberOfStopLights = 4;
 	

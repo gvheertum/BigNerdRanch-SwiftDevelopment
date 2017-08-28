@@ -20,6 +20,12 @@ Interesting finds and observations:
 * Struct
 - Structs are initialized by StructName(). The new operator cannot be used.
 - Struct funcs are by default not allowed to mutate data, like the enums they need to be flagged as mutating
+- Mutating functions on structs can be captured in a variable by using the let structFunc = structname.function. The captured function can be fed a struct of the own type and that function can be called again:
+    var p = Person();
+    let changeName = Person.changeName; //type = (inout Person) -> (String, String) -> ()
+    var changeNameForP = changeName(&p);
+    changeNameForP("Harry", "de Testkabouter");
+    p.introduce(); //This will update the p object we have (since we parsed a reference)
 
 * Classes
 - No mandatory access modifiers (public/private/etc needed)
@@ -29,3 +35,12 @@ Interesting finds and observations:
 - Final prevents override (unlike .net where override cannot be done if not virtual abstract), swift seems to always allow override unless otherwise specified (where .NET can use the new when no override is possible as a work around)
 - Structs are copied by value, so altering a struct in your class will only alter the working copy of that element and not the "original", in the monster example this makes that the town in the main is having the old number of residents, while the town copy in the monster updates the number in the local town. This also explains why you should not use let x = nullable {} to work with structs, since updating values will update them locally in the temp var, not in the original.
 - Structs have static funcs, classes have class funcs (and statics). These funcs are not created for each instance of the class, but are shared. Class funcs can be overriden (override class func ...), as long as they are not flagged as final (or when used static, since static cannot be overriden, so static func is functionally equal to final class func). The class/statics cannot be called on instances of the class since they are part of the type and not the instances.
+
+* Functional aspects
+- Function returns can be written as:
+return
+{
+    (name : String) -> String in
+    return "\(greeting), \(name)";
+};
+ which will return a function taking a string argument and returning a string
