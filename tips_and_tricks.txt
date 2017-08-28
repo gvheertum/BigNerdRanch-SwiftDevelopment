@@ -7,6 +7,8 @@ Interesting finds and observations:
 * General
 - For readability numeric values can be split with a 1000 separator (_) -> 9_001
 - Naming conventions seem to prefer lowerCamelCase (e.g. enum values, struct properties) 
+- Classes and structs allow nesting of other class, struct, enum items
+- Swift does not enforce the filename to be equal to the classes nor does it enforce a single class per file
 
 * Enumerations
 - Enums are not inheriting from any type by default (unlike .net which inherits from int by default)
@@ -44,3 +46,15 @@ return
     return "\(greeting), \(name)";
 };
  which will return a function taking a string argument and returning a string
+
+Properties and variables
+* Lazy properties are properties that are set when called (not on init of the object/struct). This will set the property once (and only once) if the property is called
+    lazy var townSize : TownSize =
+	{}(); //Note that the {} are required
+* The lazy makes the function using it mutating. Using this var from a non-mutating function in a struct will yield an compiler error.
+* Swift also allows get{} set{} logic, like .NET for properties
+    var prop : Type
+    {
+        get {}
+        set {}
+    }
