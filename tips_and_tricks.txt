@@ -20,3 +20,11 @@ Interesting finds and observations:
 * Struct
 - Structs are initialized by StructName(). The new operator cannot be used.
 - Struct funcs are by default not allowed to mutate data, like the enums they need to be flagged as mutating
+
+* Classes
+- No mandatory access modifiers (public/private/etc needed)
+- Functions are overriden by adding an override to the function
+- Calls to the parent class are done through super.[call]
+- Override of set vars cannot be done with a simple override addition
+- Final prevents override (unlike .net where override cannot be done if not virtual abstract), swift seems to always allow override unless otherwise specified (where .NET can use the new when no override is possible as a work around)
+- Structs are copied by value, so altering a struct in your class will only alter the working copy of that element and not the "original", in the monster example this makes that the town in the main is having the old number of residents, while the town copy in the monster updates the number in the local town. This also explains why you should not use let x = nullable {} to work with structs, since updating values will update them locally in the temp var, not in the original.
