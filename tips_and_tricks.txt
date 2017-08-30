@@ -18,6 +18,9 @@ var myVar : MyType = MyType()!; //In case MyType returns MyType? through a faila
     if(pop > 0) { return nil; }
     //The first is a bit better for reading, since we ensure something
 - Because parameters are named these are used for the signature. Swift allows overrides based on names rather than types (where .NET fails if the signature is equal based on types)
+- Ref and value types work as expected (explained in chapter 18), even linking ref types in value types keeps them a ref.
+- Copies are by default shallow (so an array copy will copy the array references and not the objects in the array)
+- Pointer checks are done with ===, == will perform a value compare
 
 * Enumerations
 - Enums are not inheriting from any type by default (unlike .net which inherits from int by default)
