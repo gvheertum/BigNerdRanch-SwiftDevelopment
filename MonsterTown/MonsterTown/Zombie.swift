@@ -9,7 +9,29 @@
 import Foundation
 class Zombie : Monster
 {
-	var limping: Bool = true;
+	//We are not setting all let vars, so we are convenient
+	convenience init()
+	{
+		self.init(name: "Nameless zombie", town: nil, limping: false);
+	}
+	
+	init(name: String, town: Town?, limping: Bool = false)
+	{
+		self.limping = limping;
+		super.init(name: name, town: town);
+	}
+	
+	//Will point the init specifically to this one instead of arriving at the parent
+	//Like the first parameterless constructor we are not setting the vars, so I guess we are also convenient as you might say ;)
+	required convenience init(name: String, town: Town?)
+	{
+		print("constructing Zombie");
+		self.init(name: name, town:town, limping: false);
+	}
+	
+	
+	
+	let limping: Bool;
 	//var name = "Bob the brainless zombie";
 	override func scareTown()
 	{

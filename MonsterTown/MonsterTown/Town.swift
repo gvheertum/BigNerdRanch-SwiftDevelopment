@@ -10,6 +10,27 @@ import Foundation
 
 struct Town
 {
+	/*init()
+	{
+		var x = Date.init(timeIntervalSinceNow: 0);
+		self.init(name: "Default town \(x)", population: 9_005);
+	}*/
+	init?(name: String, population: Int = 9_001)
+	{
+		guard population > 0 else { return nil; }
+		self.population = population;
+		self.name = name;
+	}
+	
+	init?(name: String, population: Int, region: String)
+	{
+		self.init(name: name, population: population);
+		self.region = region;
+	}
+
+	
+	var region : String = "";
+	
 	enum TownSize
 	{
 		case small;

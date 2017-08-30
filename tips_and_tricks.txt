@@ -9,6 +9,15 @@ Interesting finds and observations:
 - Naming conventions seem to prefer lowerCamelCase (e.g. enum values, struct properties) 
 - Classes and structs allow nesting of other class, struct, enum items
 - Swift does not enforce the filename to be equal to the classes nor does it enforce a single class per file
+- Crash and burn can be done with fatalError("Errmsg")
+- If you are sure the return type is not nil (even if the type return is nullable), you can add a ! to the end of the call:
+var myVar : MyType = MyType()!; //In case MyType returns MyType? through a failable init
+- guard statements are used like asserst, but I am still not sure why I should do:
+    guard pop > 0 else { return nil}
+    //instead of
+    if(pop > 0) { return nil; }
+    //The first is a bit better for reading, since we ensure something
+- Because parameters are named these are used for the signature. Swift allows overrides based on names rather than types (where .NET fails if the signature is equal based on types)
 
 * Enumerations
 - Enums are not inheriting from any type by default (unlike .net which inherits from int by default)
@@ -28,6 +37,7 @@ Interesting finds and observations:
     var changeNameForP = changeName(&p);
     changeNameForP("Harry", "de Testkabouter");
     p.introduce(); //This will update the p object we have (since we parsed a reference)
+- If you do not defined default values for the struct variables (when the are flagged as let), swift will create a constructor for you
 
 * Classes
 - No mandatory access modifiers (public/private/etc needed) -> Default behavior is internal
@@ -37,15 +47,27 @@ Interesting finds and observations:
 - Final prevents override (unlike .net where override cannot be done if not virtual abstract), swift seems to always allow override unless otherwise specified (where .NET can use the new when no override is possible as a work around)
 - Structs are copied by value, so altering a struct in your class will only alter the working copy of that element and not the "original", in the monster example this makes that the town in the main is having the old number of residents, while the town copy in the monster updates the number in the local town. This also explains why you should not use let x = nullable {} to work with structs, since updating values will update them locally in the temp var, not in the original.
 - Structs have static funcs, classes have class funcs (and statics). These funcs are not created for each instance of the class, but are shared. Class funcs can be overriden (override class func ...), as long as they are not flagged as final (or when used static, since static cannot be overriden, so static func is functionally equal to final class func). The class/statics cannot be called on instances of the class since they are part of the type and not the instances.
-- Constructors are called initializators and are defined by init(properties) { } in the class and struct
+- Constructors are called initializators and are defined by init(properties) { } in the class and struct, inits can delegate work to other inits by using self.init, unlike some other languages this call can be at the end of the function body, allowing us to setup certain stuff (while .NET uses constructor() : base() / this() which calls the constructor of this/base first before running the body). Please note that before being able to use super/self the init of that item NEEDS to be called before accessing the item.
+- Constructors are inheritted from the parent class, meaning that the constructors of the parent class can be used to construct child classes (unlike .net where you are required to have something in the child to satisfy the parent class constructor). Even having own constructors in the child class does not remove the possiblity to use the parent call
+    class A { init(x,y); } class B : A { }
+    var t = B(x,y);
+- You can require children to have their own version of the constructor by applying required to the init in the parent, this will force the child to have a constructor with the same signature.
+- There is a special type of constructor that does not enforce setting values to all properties in the body (something the init normally enforces), this is the convenience indicator. This will suspend checking whether the properties are all set. This is most likely to be used when having "inheritance" to another constructor and therefor not setting the properties ourself.
+    convenience init(a,b) { }
+- When using convenience options, there is one init required that sets all let elements, and that one should be called by the convenience param
+- Deconstructors are called deinit functions. These functions are called if all references are dropped, these functions are also called if the children are deconstructed (as expected)
+    deinit { /*Do Stuff*/ } 
+- If you want to fail in the constructor there is a technique called failing initalizers, these are flagged with init?(). This makes the return type a nullable type for this constructor.
+- Chaining constructors (calling each other) all need to be failable if the parent is failing
+- The self init needs to be called before setting self.var in the init function (super can be called whenever)
 
 * Functional aspects
 - Function returns can be written as:
-return
-{
-    (name : String) -> String in
-    return "\(greeting), \(name)";
-};
+    return
+    {
+        (name : String) -> String in
+        return "\(greeting), \(name)";
+    };
  which will return a function taking a string argument and returning a string
 
 Properties and variables
@@ -61,18 +83,18 @@ Properties and variables
     }
 Set requires a paramnam, this will allow you to use names that make sense. The notation of the set is a bit differtent due to the requirement of the parametername. Also note that the parameter does not require a type (is inferred from the property)
 * Properties support observer functions that are attached to the property and are fired when the property is changed (or at least the set is called, it doesnt check if the value is really changing)
-var propName : Type = [xxxx]
-{
-    didSet(oldpropName)
+    var propName : Type = [xxxx]
     {
-        //oldpropName contains the property value before the set
-        //The function is called after setting, so the propName itself will contain the new value
+        didSet(oldpropName)
+        {
+            //oldpropName contains the property value before the set
+            //The function is called after setting, so the propName itself will contain the new value
+        }
     }
-}
 * vars can be flagged as class, making them "staticy", the patern used for the class var is the pattern for lazy eval:
-class var myVar : Type
-{
-    return [xx];
-}
+    class var myVar : Type
+    {
+        return [xx];
+    }
 * making vars readonly is done on the definition of the var
 internal private(set) var myProperty = value; //this defines the property internal and the set private

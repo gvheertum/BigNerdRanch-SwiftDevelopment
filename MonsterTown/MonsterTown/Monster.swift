@@ -9,6 +9,13 @@
 import Foundation
 class Monster
 {
+	required init(name: String, town : Town?)
+	{
+		print("constructing Monster");
+		self.name = name;
+		self.town = town;
+	}
+	
 	var town: Town?;
 	var name: String = "James the base monster";
 	
@@ -44,5 +51,10 @@ class Monster
 	class var noise : String
 	{
 		return "BWAARGH...";
+	}
+	
+	deinit
+	{
+		print("Sadly \(name) decided to no longer be with us");
 	}
 }

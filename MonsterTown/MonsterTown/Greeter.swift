@@ -26,6 +26,7 @@ struct Person
 //Chapter 15 -> mutation methods and func references
 class Greeter
 {
+	
 	//Returns a greeting function
 	func greeting(_ greeting : String) -> ((String) -> String)
 	{
