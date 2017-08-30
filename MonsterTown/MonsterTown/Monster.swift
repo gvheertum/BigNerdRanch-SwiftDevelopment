@@ -11,6 +11,7 @@ class Monster
 {
 	var town: Town?;
 	var name: String = "James the base monster";
+	
 	func scareTown()
 	{
 		if(self.town != nil)
@@ -23,13 +24,25 @@ class Monster
 		}
 	}
 	
+	var victimPool : Int
+	{
+		get
+		{
+			return town?.population ?? 0;
+		}
+		set(value)
+		{
+			town?.population = value;
+		}
+	}
+	
 	final func sayName()
 	{
 		print("Hi I am \(self.name)")
 	}
 	
-	class func makeNoise() -> Void
+	class var noise : String
 	{
-		print("BWAARGH...");
+		return "BWAARGH...";
 	}
 }

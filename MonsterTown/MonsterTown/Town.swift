@@ -40,8 +40,20 @@ struct Town
 		}
 	}
 	
-	let name = "Smallvile";
-	var population = 9_001;
+	var name : String = "Smallvile" {
+		didSet(oldName)
+		{
+			print("Mayor of \(oldName) decided that \(name) is more suitable");
+		}
+	}
+	
+	var population : Int = 9_001
+	{
+		didSet(oldPopulation)
+		{
+			print("Population changed from \(oldPopulation) to \(population)");
+		}
+	}
 	var numberOfStopLights = 4;
 	
 	mutating func printStatus() -> Void

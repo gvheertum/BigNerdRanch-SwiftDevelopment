@@ -30,13 +30,14 @@ Interesting finds and observations:
     p.introduce(); //This will update the p object we have (since we parsed a reference)
 
 * Classes
-- No mandatory access modifiers (public/private/etc needed)
+- No mandatory access modifiers (public/private/etc needed) -> Default behavior is internal
 - Functions are overriden by adding an override to the function
 - Calls to the parent class are done through super.[call]
 - Override of set vars cannot be done with a simple override addition
 - Final prevents override (unlike .net where override cannot be done if not virtual abstract), swift seems to always allow override unless otherwise specified (where .NET can use the new when no override is possible as a work around)
 - Structs are copied by value, so altering a struct in your class will only alter the working copy of that element and not the "original", in the monster example this makes that the town in the main is having the old number of residents, while the town copy in the monster updates the number in the local town. This also explains why you should not use let x = nullable {} to work with structs, since updating values will update them locally in the temp var, not in the original.
 - Structs have static funcs, classes have class funcs (and statics). These funcs are not created for each instance of the class, but are shared. Class funcs can be overriden (override class func ...), as long as they are not flagged as final (or when used static, since static cannot be overriden, so static func is functionally equal to final class func). The class/statics cannot be called on instances of the class since they are part of the type and not the instances.
+- Constructors are called initializators and are defined by init(properties) { } in the class and struct
 
 * Functional aspects
 - Function returns can be written as:
@@ -56,5 +57,22 @@ Properties and variables
     var prop : Type
     {
         get {}
-        set {}
+        set(paramName) {}
     }
+Set requires a paramnam, this will allow you to use names that make sense. The notation of the set is a bit differtent due to the requirement of the parametername. Also note that the parameter does not require a type (is inferred from the property)
+* Properties support observer functions that are attached to the property and are fired when the property is changed (or at least the set is called, it doesnt check if the value is really changing)
+var propName : Type = [xxxx]
+{
+    didSet(oldpropName)
+    {
+        //oldpropName contains the property value before the set
+        //The function is called after setting, so the propName itself will contain the new value
+    }
+}
+* vars can be flagged as class, making them "staticy", the patern used for the class var is the pattern for lazy eval:
+class var myVar : Type
+{
+    return [xx];
+}
+* making vars readonly is done on the definition of the var
+internal private(set) var myProperty = value; //this defines the property internal and the set private

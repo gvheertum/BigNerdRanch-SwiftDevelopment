@@ -25,8 +25,8 @@ class Zombie : Monster
 		town?.disposeResidents(10);
 	}
 	
-	override class func makeNoise() -> Void
+	override class var noise : String
 	{
-		print("Brainsszzz...");
+		return "Brainsszzz...";
 	}
 }

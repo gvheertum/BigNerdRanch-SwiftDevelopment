@@ -14,6 +14,8 @@ greeter.doGreetingWork();
 
 
 var myTown : Town = Town();
+myTown.name = myTown.name;
+myTown.population = myTown.population;
 myTown.printStatus();
 myTown.disposeResidents(30);
 myTown.printStatus();
@@ -30,8 +32,8 @@ zombie.town = myTown;
 monstersToUnleash.append(zombie);
 
 //Class/static functions
-Monster.makeNoise();
-Zombie.makeNoise();
+print(Monster.noise);
+print(Zombie.noise);
 
 //Go monsters!
 func unleashTheMonsters(_ monsters : [Monster])
