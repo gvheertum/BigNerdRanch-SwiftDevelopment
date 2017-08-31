@@ -41,7 +41,14 @@ var myVar : MyType = MyType()!; //In case MyType returns MyType? through a faila
     changeNameForP("Harry", "de Testkabouter");
     p.introduce(); //This will update the p object we have (since we parsed a reference)
 - If you do not defined default values for the struct variables (when the are flagged as let), swift will create a constructor for you
-
+- References are copied as reference when structs are copied, meaning that the inner-elements of the structs point to the same item (as expected). The can be altered to create a copy via the "Copy on write" pattern. This pattern will check if the object in our struct is referencing to a unique element, if not we pull a copy. The call to the function checking this (a mutating function) should be done by all elements accessing the objectName property (this is similar to the EnsureXXX we often create in our .NET projects to ensure certain object state). Since the check and copy is a mutating func, the callers are therfore also mutating.
+    private mutating func copyIfNeeded()
+	{
+		if !isKnownUniquelyReferenced(&propertyContainingReference) //Note the &
+		{
+			//Do the copy
+		}
+	}
 * Classes
 - No mandatory access modifiers (public/private/etc needed) -> Default behavior is internal
 - Functions are overriden by adding an override to the function
