@@ -21,6 +21,12 @@ var myVar : MyType = MyType()!; //In case MyType returns MyType? through a faila
 - Ref and value types work as expected (explained in chapter 18), even linking ref types in value types keeps them a ref.
 - Copies are by default shallow (so an array copy will copy the array references and not the objects in the array)
 - Pointer checks are done with ===, == will perform a value compare
+- Ranges (x..y) cover x and y in the result, if you want to extract the last one (e.g. in iterator) use x ..< array.length
+- The toString()-esque function is in the CustomStringConvertible.description : string int the CustomStringConvertible protocol
+
+* Interfaces (aka Protocols)
+- Interfaces are called Protocols, inheritance is like regular inheritance (x : y), multiple protocols can be implemented
+- mutating is part of the protocol description for struct items that mutate the state (so the protocol needs to flag the element as mutating)
 
 * Enumerations
 - Enums are not inheriting from any type by default (unlike .net which inherits from int by default)
