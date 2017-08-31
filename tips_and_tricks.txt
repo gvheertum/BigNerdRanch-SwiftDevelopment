@@ -31,11 +31,17 @@ var myVar : MyType = MyType()!; //In case MyType returns MyType? through a faila
 * Exception Handling
 - Exceptions are called Errors (inheriting from Error) and are upped by throw xxx()
 - Like Java, you need to indicate that a function can throw an exception func myFunc() throws -> returnType. Throw functions need to throw themselves OR have the error handling in place.
-- Exception catching via do { try throwingFunction(); } catch {} //Note the do block and the try before the failing function. The try is required to prefix the function that can throw.
+- Exception catching via do { try throwingFunction(); } catch {} //Note the do block and the try before the failing function. 
+- The try is required to provide in before the function call to a throwable
+- A try should be used in a do - catch block, however you can ommit the do catch by using try! functionCall()
 - Asserts do not require a catch construction, the catch is only required for the functions explicitly using throw
 - The catch will automatically have the var error at your disposal (does not need to be specified in the catch)
 - Specific errors can be catched by specifying the type:
     catch Item1.Enum1.enumVal(let var); //This allows you to catch enumVal types of Enum1 in the struct Item1. The enumVal is defined to have a parameter, which can be caught with the let
+- Convention seems to have the Error as inner enum in the class using it (Parser.Error for example)
+- Guard and try? can be used to do an inline guard try block
+    guard let myVar = try? codeThatCanThrow() else {}
+- The catch { } is required since the exception system requires you to be exhaustive when catching, thus having a case for a catch all is required (even if you think you catched all thrown types) 
 
 * Interfaces (aka Protocols)
 - Interfaces are called Protocols, inheritance is like regular inheritance (x : y), multiple protocols can be implemented

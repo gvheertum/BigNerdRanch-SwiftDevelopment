@@ -91,21 +91,92 @@ class Lexer
 	}
 }
 
+class Parser
+{
+	enum Error : Swift.Error
+	{
+		case unexpectedEndOfInput
+		case invalidToken(Token)
+	}
+	
+	let tokens : [Token];
+	var position = 0;
+	
+	init(_ tokens : [Token])
+	{
+		self.tokens = tokens;
+	}
+	
+	func getNextToken() -> Token?
+	{
+		guard position < tokens.count else { return nil; }
+		var t = tokens[position];
+		position += 1;
+		return t;
+	}
+	
+	func getNumber() throws -> Int
+	{
+		guard let token = getNextToken() else { throw Parser.Error.unexpectedEndOfInput; }
+		switch token
+		{
+		case .number(let nr):
+			return nr;
+		default:
+			throw Parser.Error.invalidToken(token);
+		}
+	}
+	
+	func parse() throws -> Int
+	{
+		var value = try getNumber(); //Get the first number
+		
+		while let token = getNextToken()
+		{
+			switch token
+			{
+			case .plus:
+				let nextNumber = try getNumber();
+				value += nextNumber;
+			case .number:
+				throw Parser.Error.invalidToken(token)
+			}
+		}
+		return value;
+	}
+
+}
 
 //Training the lexer
 func lexerTester(_ params : String...)
 {
+	
 	for p in params
 	{
-		print("Lexing: \(p)");
+		print("Evaluating: \(p)");
+		//** With try? in a guard you can use an inline handling
+		//guard let tokens = try? Lexer(p).lex() else { print("Error in lexing"); return; }
+		//** With try! you can force your way around the do - catch
+		//var tokens = try Lexer(p).lex();
+		
 		do
 		{
-			var l = try Lexer(p).lex();
-			print(l);
+			var tokens = try Lexer(p).lex();
+			var parser = Parser(tokens);
+			var res = try parser.getNumber();
+			print("\(p) -> \(res)");
 		}
 		catch Lexer.Error.InvalidCharacter(let ch)
 		{
 			print("Invalid character exception thrown for char: \(ch)");
+		}
+		catch Parser.Error.invalidToken(let t)
+		{
+			print("Parser exception, invalid token: \(t)");
+		}
+		catch Parser.Error.unexpectedEndOfInput
+		{
+			print("Unexepect end of lexing string")
 		}
 		catch
 		{
@@ -114,4 +185,4 @@ func lexerTester(_ params : String...)
 	}
 }
 
-lexerTester("1+1", "2+3", "", "1a");
+lexerTester("1+1", "2+3", "", "1a", "6+7   + 9 + 2", "22", "22 + ", "+22");
