@@ -27,6 +27,18 @@ var myVar : MyType = MyType()!; //In case MyType returns MyType? through a faila
 - while let nextCharacter = functionThatReturnsItems() -> This will run while the return is not nil, returning nil will terminate
 - Ranges also work with other stuff (like strings: case "0" ... "9":)
 - In case of namespace conflicts (naming a var similar to a Swift var) can be fixed by explicitly use the Swift. namespace (like Swift.Error)
+- Type aliasses can be used as replacements for base types, by saying typealias MyAlias = Double, you are allowed to use MyAlias as identifier instead of double, unlike inheriting from double this allows you to use double <-> myalias vars in any combination (from double -> myalias and v.v.)
+- You can extend known types through:
+	extension Velocity
+	{
+		var speedInMph : Velocity { return self / 1.60934; }
+		var speedInKmh : Velocity { return self; }
+	}
+- Extensions can also include init functions, the init can use self.init to call internal constructors
+- Extensions can also include enums and internal classes as part of the definition (which can then be used by the extension code)
+- The extended elements are not visible in the object to string notation (so like .NET they are not really part of the object it seems)
+- Extensions can be used to set a conformance (by using an inherit in the extension)
+- You can have multiple extension definitions for one type
 
 * Exception Handling
 - Exceptions are called Errors (inheriting from Error) and are upped by throw xxx()
@@ -132,4 +144,13 @@ Set requires a paramnam, this will allow you to use names that make sense. The n
         return [xx];
     }
 * making vars readonly is done on the definition of the var
-internal private(set) var myProperty = value; //this defines the property internal and the set private
+	internal private(set) var myProperty = value; //this defines the property internal and the set private
+* Properties can have a willSet element in the definition to perform certain checks upon setting the value (unlike the didSet this is done before checking)
+	var prop : Double
+	{
+		willSet
+		{
+			precondition(newValue <= 1.0 && newValue >= 0, "Value need to be between 0 and 1)";
+		}	
+	} 
+* The willset however does not seem to check on the init, if I put 33 there, it will just work and put 33 there
