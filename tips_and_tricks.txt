@@ -1,4 +1,6 @@
-Interesting finds and observations:
+== Interesting finds and observations ==
+Please note that there are from a standpoint of a developer with .NET development experience and therefor might use terms related to .NET or use comparisons to .NET.
+
 
 * IDE
 - When you want to view details regarding a var, you can use alt-click (described as option-click in the book), this will show a popout with information about the variable (like the type).
@@ -39,6 +41,9 @@ var myVar : MyType = MyType()!; //In case MyType returns MyType? through a faila
 - The extended elements are not visible in the object to string notation (so like .NET they are not really part of the object it seems)
 - Extensions can be used to set a conformance (by using an inherit in the extension)
 - You can have multiple extension definitions for one type
+- Generics work like they do in .NET by specifying MyType<T>, where you can use T throught the class/enum to indicate the generic element type
+- Variables of generics need to be flagged with the explicit <T>, however you can use the constructor without the type:
+	var obj : GenericClass<String> = GenericClass();
 
 * Exception Handling
 - Exceptions are called Errors (inheriting from Error) and are upped by throw xxx()
