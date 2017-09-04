@@ -48,7 +48,12 @@ var myVar : MyType = MyType()!; //In case MyType returns MyType? through a faila
 - You can use the where to check for additional type matches (like properties that need to match a certain type). Sample below ensures that the Element in the Iterator of the Sequence class matches the type T we have in our class
     mutating func pushMany<S : Sequence>(_ sequence : S)
 		where S.Iterator.Element == T
-    
+- Extensions can be limited via where constructions
+    extension Sequence where Iterator.Element == Excercise { } //Limits the extension to only be implemented for Sequences with the Excercise as element
+- Through extensions you can set default (for example for the description), which can be overriden in implementor classes or extensions on those classes. The most specific item will be called
+- Extensions cannot redefine items set in the class itself (if we have description in the class, we cannot use an extension to redefine this element), implementing more-specific implementations (if the parent has a definition) is allowed
+- Extensions with default implementations can yield "confusing" results if there is an extensions on a class and a child element also uses the same variable name. Swift will yield the implementation belonging to the type you have at hand at that moment. If we type the element as the parent, the parent part is shown, if we type the var as the child the child logic is used. This is kinda similar to the .NET working of explicit interfaces and the use of new (instead of override), .NET will also call the function related to the type at hand. The book uses an example with a var using a getter (string compose) in the parent and a simple string var in the child.
+
 
 ## Exception Handling
 - Exceptions are called Errors (inheriting from Error) and are upped by throw xxx()
@@ -65,7 +70,7 @@ var myVar : MyType = MyType()!; //In case MyType returns MyType? through a faila
     guard let myVar = try? codeThatCanThrow() else {}
 - The catch { } is required since the exception system requires you to be exhaustive when catching, thus having a case for a catch all is required (even if you think you catched all thrown types) 
 
-## Interfaces (aka Protocols)
+## Protocols (similar to Interfaces)
 - Interfaces are called Protocols, inheritance is like regular inheritance (x : y), multiple protocols can be implemented
 - mutating is part of the protocol description for struct items that mutate the state (so the protocol needs to flag the element as mutating)
 - Protocols cannot be made generic (unlike the interface equivalent in .NET which is able to be generic), however there is an option using associated type. Associated types can constraints like generics by having : and parent after the name (Element : InheritFromThisClass)
@@ -83,6 +88,10 @@ var myVar : MyType = MyType()!; //In case MyType returns MyType? through a faila
 - In the typealias example the typealias can also be inferred by Swift, if we use the type in a place where the Protocol has the associatedtype defined, it will resolve into that type
     mutating func next() -> T? { return self.stack.pop(); } //Here Swift will infer the Element = T due to the usage of T? where the Element? was in the protocol.
 - Protocols with a typealias cannot be used as concrete types, in our above example you cannot have var x : IteratorProtocol = DoSomething();
+- Note that if you make a property in a protocol you cannot use {get;}, the semi-colon will yield an error, just use {get}
+- Protocols can be extended to have behavior defined in them
+
+
 
 ## Enumerators
 - Enums are not inheriting from any type by default (unlike .net which inherits from int by default)
