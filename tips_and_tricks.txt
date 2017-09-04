@@ -26,7 +26,7 @@ var myVar : MyType = MyType()!; //In case MyType returns MyType? through a faila
 - Ranges (x..y) cover x and y in the result, if you want to extract the last one (e.g. in iterator) use x ..< array.length
 - The toString()-esque function is in the CustomStringConvertible.description : string int the CustomStringConvertible protocol
 - assert and precondition can be used to make assertions before calling. These will result in an exception (unlike guard)
-- while let nextCharacter = functionThatReturnsItems() -> This will run while the return is not nil, returning nil will terminate
+- while let nextCharacter = functionThatReturnsItems() -> This will run while the return is not nil, returning nil will terminate, great for iterators (or everything else with next(), pop(), whatever)
 - Ranges also work with other stuff (like strings: case "0" ... "9":)
 - In case of namespace conflicts (naming a var similar to a Swift var) can be fixed by explicitly use the Swift. namespace (like Swift.Error)
 - Type aliasses can be used as replacements for base types, by saying typealias MyAlias = Double, you are allowed to use MyAlias as identifier instead of double, unlike inheriting from double this allows you to use double <-> myalias vars in any combination (from double -> myalias and v.v.)
@@ -44,6 +44,22 @@ var myVar : MyType = MyType()!; //In case MyType returns MyType? through a faila
 - Generics work like they do in .NET by specifying MyType<T>, where you can use T throught the class/enum to indicate the generic element type
 - Variables of generics need to be flagged with the explicit <T>, however you can use the constructor without the type:
 	var obj : GenericClass<String> = GenericClass();
+- Generic constraints are placed in the <> notation, func functionWithGeneric<T : ElementTNeedsToInheritFrom>();
+- Protocols cannot be made generic (unlike the interface equivalent in .NET which is able to be generic), however there is an option using associated type. Associated types can constraints like generics by having : and parent after the name (Element : InheritFromThisClass)
+    protocol IteratorProtocol
+    {
+        associatedtype Element;
+        mutating func next() -> Element?
+    }
+    //In the implementation you set a typealias to refer to element. This informs that the Element is T.
+    struct StackIterator<T> : IteratorProtocol
+    {
+        typealias Element = T;
+        mutating func next() -> Element?
+        {
+            return self.stack.pop();
+        }
+    }
 
 * Exception Handling
 - Exceptions are called Errors (inheriting from Error) and are upped by throw xxx()
