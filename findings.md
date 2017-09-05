@@ -281,4 +281,4 @@ Set requires a paramnam, this will allow you to use names that make sense. The n
     }
 ```
 * Closures can be used after the function is done, therefor the reference is kept to self (or any other element wrapped in the closure). Examples of closures getting called are event handlers or async like structures. You provide a function to call, the system calls it when it feels like it. In most cases the function you sent your reference to is long-done and returned. This is called an escaping closure, the closure will escape the current flow/scope.
-* Swift supports
+* Swift supports 
