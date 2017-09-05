@@ -11,6 +11,8 @@ import Foundation
 class Person : CustomStringConvertible
 {
 	let name: String;
+	let accountant : Accountant = Accountant();
+	
 	var assets : [Asset] = [Asset]();
 	var description: String
 	{
@@ -20,12 +22,23 @@ class Person : CustomStringConvertible
 	init(name: String)
 	{
 		self.name = name;
+		accountant.netWorthChangedHandler =
+		{
+			[weak self] nw in
+			self?.netWorthChanged(to: nw);
+			return;
+		};
 	}
 	
 	func takeOwnership(of asset: Asset)
 	{
 		asset.owner = self;
 		assets.append(asset);
+	}
+	
+	func netWorthChanged(to newWorth : Double)
+	{
+		print("The net worth of \(self) is now estimated at \(newWorth)");
 	}
 	
 	deinit

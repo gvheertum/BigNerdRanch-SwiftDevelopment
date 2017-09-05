@@ -12,9 +12,9 @@ Please note that there are from a standpoint of a developer with .NET developmen
 - Swift does not enforce the filename to be equal to the classes nor does it enforce a single class per file
 - Crash and burn can be done with fatalError("Errmsg")
 - If you are sure the return type is not nil (even if the type return is nullable), you can add a ! to the end of the call:
-var myVar : MyType = MyType()!; //In case MyType returns MyType? through a failable init
+var myVar : MyType = MyType()!; //In case MyType returns MyType? through a fail-able init
 - The ! operator on nullables can be used like the .Value in .NET, this will force the element to use the value of the optional instead of the optional (like .NET this yields an error if the type IS nil)
-- guard statements are used like asserst, but I am still not sure why I should do:
+- guard statements are used like asserts, but I am still not sure why I should do:
 ```swift
     guard pop > 0 else { return nil}
     //instead of
@@ -45,7 +45,7 @@ var myVar : MyType = MyType()!; //In case MyType returns MyType? through a faila
 - The extended elements are not visible in the object to string notation (so like .NET they are not really part of the object it seems)
 - Extensions can be used to set a conformance (by using an inherit in the extension)
 - You can have multiple extension definitions for one type
-- Generics work like they do in .NET by specifying MyType<T>, where you can use T throught the class/enum to indicate the generic element type
+- Generics work like they do in .NET by specifying MyType<T>, where you can use T through the class/enum to indicate the generic element type
 - Variables of generics need to be flagged with the explicit <T>, however you can use the constructor without the type:
 	var obj : GenericClass<String> = GenericClass();
 - Generic constraints are placed in the <> notation, func functionWithGeneric<T : ElementTNeedsToInheritFrom>();
@@ -58,7 +58,7 @@ var myVar : MyType = MyType()!; //In case MyType returns MyType? through a faila
 ```swift
     extension Sequence where Iterator.Element == Excercise { } //Limits the extension to only be implemented for Sequences with the Excercise as element`
 ```
-- Through extensions you can set default (for example for the description), which can be overriden in implementor classes or extensions on those classes. The most specific item will be called
+- Through extensions you can set default (for example for the description), which can be overridden in implementor classes or extensions on those classes. The most specific item will be called
 - Extensions cannot redefine items set in the class itself (if we have description in the class, we cannot use an extension to redefine this element), implementing more-specific implementations (if the parent has a definition) is allowed
 - Extensions with default implementations can yield "confusing" results if there is an extensions on a class and a child element also uses the same variable name. Swift will yield the implementation belonging to the type you have at hand at that moment. If we type the element as the parent, the parent part is shown, if we type the var as the child the child logic is used. This is kinda similar to the .NET working of explicit interfaces and the use of new (instead of override), .NET will also call the function related to the type at hand. The book uses an example with a var using a getter (string compose) in the parent and a simple string var in the child.
 
@@ -68,7 +68,7 @@ var myVar : MyType = MyType()!; //In case MyType returns MyType? through a faila
 - Like Java, you need to indicate that a function can throw an exception func myFunc() throws -> returnType. Throw functions need to throw themselves OR have the error handling in place.
 - Exception catching via do { try throwingFunction(); } catch {} //Note the do block and the try before the failing function. 
 - The try is required to provide in before the function call to a throwable
-- A try should be used in a do - catch block, however you can ommit the do catch by using try! functionCall()
+- A try should be used in a do - catch block, however you can omit the do catch by using try! functionCall()
 - Asserts do not require a catch construction, the catch is only required for the functions explicitly using throw
 - The catch will automatically have the var error at your disposal (does not need to be specified in the catch)
 - Specific errors can be catched by specifying the type:
@@ -107,11 +107,11 @@ var myVar : MyType = MyType()!; //In case MyType returns MyType? through a faila
 
 ### Enumerators
 - Enums are not inheriting from any type by default (unlike .net which inherits from int by default)
-- Enums funcs are by default immutable, however you can enalbe this by flagging the function as mutating
+- Enums funcs are by default immutable, however you can enable this by flagging the function as mutating
 - Enums can do a whole lot more then we are used to. In Swift they can have functions, but also different values (like when working with shapes)
 - Enums can have associated values. These are set through a constructor-like option when creating the value.
 - The associated values cannot be read directly from variables (since they are of the enum type)
-- Enums can also have recursion (which requires you to flag the enum or at least the recursive bits as inderect), the compiler otherwise needs to allocate enums in your enum without knowing the depth of the enum tree
+- Enums can also have recursion (which requires you to flag the enum or at least the recursive bits as indirect), the compiler otherwise needs to allocate enums in your enum without knowing the depth of the enum tree
 - Although enum functions can be quite useful, the full recursion I would prefer doing in classes I think
 - Enumerators can also be generic. Optional is an example of an enum that is wrapped:
 ```swift
@@ -134,7 +134,7 @@ var myVar : MyType = MyType()!; //In case MyType returns MyType? through a faila
     p.introduce(); //This will update the p object we have (since we parsed a reference)
 ```
 - If you do not defined default values for the struct variables (when the are flagged as let), swift will create a constructor for you
-- References are copied as reference when structs are copied, meaning that the inner-elements of the structs point to the same item (as expected). The can be altered to create a copy via the "Copy on write" pattern. This pattern will check if the object in our struct is referencing to a unique element, if not we pull a copy. The call to the function checking this (a mutating function) should be done by all elements accessing the objectName property (this is similar to the EnsureXXX we often create in our .NET projects to ensure certain object state). Since the check and copy is a mutating func, the callers are therfore also mutating.
+- References are copied as reference when structs are copied, meaning that the inner-elements of the structs point to the same item (as expected). The can be altered to create a copy via the "Copy on write" pattern. This pattern will check if the object in our struct is referencing to a unique element, if not we pull a copy. The call to the function checking this (a mutating function) should be done by all elements accessing the objectName property (this is similar to the EnsureXXX we often create in our .NET projects to ensure certain object state). Since the check and copy is a mutating func, the callers are therefor also mutating.
 ```swift
     private mutating func copyIfNeeded()
 	{
@@ -147,14 +147,14 @@ var myVar : MyType = MyType()!; //In case MyType returns MyType? through a faila
 
 ### Classes
 - No mandatory access modifiers (public/private/etc needed) -> Default behavior is internal
-- Functions are overriden by adding an override to the function
+- Functions are overridden by adding an override to the function
 - Calls to the parent class are done through super.[call]
 - Override of set vars cannot be done with a simple override addition
 - Final prevents override (unlike .net where override cannot be done if not virtual abstract), swift seems to always allow override unless otherwise specified (where .NET can use the new when no override is possible as a work around)
 - Structs are copied by value, so altering a struct in your class will only alter the working copy of that element and not the "original", in the monster example this makes that the town in the main is having the old number of residents, while the town copy in the monster updates the number in the local town. This also explains why you should not use let x = nullable {} to work with structs, since updating values will update them locally in the temp var, not in the original.
-- Structs have static funcs, classes have class funcs (and statics). These funcs are not created for each instance of the class, but are shared. Class funcs can be overriden (override class func ...), as long as they are not flagged as final (or when used static, since static cannot be overriden, so static func is functionally equal to final class func). The class/statics cannot be called on instances of the class since they are part of the type and not the instances.
+- Structs have static funcs, classes have class funcs (and statics). These funcs are not created for each instance of the class, but are shared. Class funcs can be overridden (override class func ...), as long as they are not flagged as final (or when used static, since static cannot be overridden, so static func is functionally equal to final class func). The class/statics cannot be called on instances of the class since they are part of the type and not the instances.
 - Constructors are called initializators and are defined by init(properties) { } in the class and struct, inits can delegate work to other inits by using self.init, unlike some other languages this call can be at the end of the function body, allowing us to setup certain stuff (while .NET uses constructor() : base() / this() which calls the constructor of this/base first before running the body). Please note that before being able to use super/self the init of that item NEEDS to be called before accessing the item.
-- Constructors are inheritted from the parent class, meaning that the constructors of the parent class can be used to construct child classes (unlike .net where you are required to have something in the child to satisfy the parent class constructor). Even having own constructors in the child class does not remove the possiblity to use the parent call
+- Constructors are inherited from the parent class, meaning that the constructors of the parent class can be used to construct child classes (unlike .net where you are required to have something in the child to satisfy the parent class constructor). Even having own constructors in the child class does not remove the possibility to use the parent call
 ```swift
     class A { init(x,y); } class B : A { }
     var t = B(x,y);
@@ -169,7 +169,7 @@ var myVar : MyType = MyType()!; //In case MyType returns MyType? through a faila
 ```swift
     deinit { /*Do Stuff*/ } 
 ```
-- If you want to fail in the constructor there is a technique called failing initalizers, these are flagged with init?(). This makes the return type a nullable type for this constructor.
+- If you want to fail in the constructor there is a technique called failing initializers, these are flagged with init?(). This makes the return type a nullable type for this constructor.
 - Chaining constructors (calling each other) all need to be failable if the parent is failing
 - The self init needs to be called before setting self.var in the init function (super can be called whenever)
 
@@ -199,7 +199,7 @@ var myVar : MyType = MyType()!; //In case MyType returns MyType? through a faila
         set(paramName) {}
     }
 ```
-Set requires a paramnam, this will allow you to use names that make sense. The notation of the set is a bit differtent due to the requirement of the parametername. Also note that the parameter does not require a type (is inferred from the property)
+Set requires a paramnam, this will allow you to use names that make sense. The notation of the set is a bit different due to the requirement of the parametername. Also note that the parameter does not require a type (is inferred from the property)
 * Properties support observer functions that are attached to the property and are fired when the property is changed (or at least the set is called, it doesnt check if the value is really changing)
 ```swift
     var propName : Type = [xxxx]
@@ -211,7 +211,7 @@ Set requires a paramnam, this will allow you to use names that make sense. The n
         }
     }
 ```
-* vars can be flagged as class, making them "staticy", the patern used for the class var is the pattern for lazy eval:
+* vars can be flagged as class, making them "static-y", the pattern used for the class var is the pattern for lazy eval:
 ```swift    
     class var myVar : Type
     {
@@ -234,10 +234,45 @@ Set requires a paramnam, this will allow you to use names that make sense. The n
 
 ###Garbage collection (See GarbageTown example)
 * The deinit will be called if all references are lost to a certain instance
-* The deinit will not be called if there are circular references (Person has 0..* assets, Asset has 0..1 person). Setting one of the items to nill will not toggle the deinit. Even if you reset the person and the asset var (the temporary one created to insert into the person), since the reference is still in the original person the count stays > 0. This is due to the strong reference principle in Swift. By adding a ref in the asset to the person, the person reference count will be incremented with 1 (meaning that if the main var is deallocated, the counter still > 0)
+* The deinit will not be called if there are circular references (Person has 0..* assets, Asset has 0..1 person). Setting one of the items to nil will not toggle the deinit. Even if you reset the person and the asset var (the temporary one created to insert into the person), since the reference is still in the original person the count stays > 0. This is due to the strong reference principle in Swift. By adding a ref in the asset to the person, the person reference count will be incremented with 1 (meaning that if the main var is deallocated, the counter still > 0)
 * In swift you can flag a reference as weak, meaning this will not increment the count. In the asset/person case, the asset will have a weak var to the person since we do not want to keep the assets alive if the person is deallocated (due to the 0..1 relation between asset and person).
 ```swift
     weak var owner : Person?;
 ```
 * weak references can only be var and is always optional (to allow setting nil and deallocate)
 * Be aware that if you set references yourself (so manually assigning the owner to the asset), the the owner is nilled at the moment the var of the owner is set to nil (since the reference count = 0 when deallocating that one), this might yield surprising results if you are not expecting this. Exposing the weak references therefor might not always be desirable.
+* Please be aware that the self reference can also cause issues when used in a closure, this links self to the other object causing a circular reference.
+
+###Event handlers
+* You can use typealias to define a function signature to make events more readable
+* After defining the event alias you can make a variable of that type (and set it to nil if required)
+* The variable with the event type can be called as function (with a nil-propagation call)
+```swift
+    typealias NetWorthChanged = (Double) -> Void;
+	var netWorthChangedHandler: NetWorthChanged? = nil;
+	var netWorth: Double = 0.0
+	{
+		didSet
+		{
+			netWorthChangedHandler?(netWorth); 
+		}
+	}
+```
+* Assigning an event handler can be done by making an inline func (sample below sets the handler in the account var to a function having the nw variable for the double of the signature and calling the netWorthChanged in the class defining this handler)
+```swift
+    accountant.netWorthChangedHandler =
+    {
+        nw in
+        self.netWorthChanged(to: nw); //By using self you will include a reference to the self in the closure, meaning the count is upped by one
+        return;
+    };
+```
+* When using self in a closure one can use [weak self] in the signature of the function. Please note that the self then becomes option and needs null-propagation to be used. This principle is referred to as "Capture List"
+```swift
+    accountant.netWorthChangedHandler =
+    {
+        [weak self] nw in
+        self?.netWorthChanged(to: nw); //Due to the weak self, the count of self is not incremented here
+        return;
+    }
+```

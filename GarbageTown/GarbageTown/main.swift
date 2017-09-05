@@ -11,6 +11,8 @@ import Foundation
 //Regular deallocation tests
 func allocationFunction1()
 {
+	print("*****allocationFunction1()");
+	
 	var bob : Person? = Person(name: "Bob");
 	print("created: \(bob)");
 
@@ -36,6 +38,8 @@ func allocationFunction1()
 //Circular reference deallocation
 func allocationFunction2()
 {
+	print("*****allocationFunction2()");
+
 	var bob : Person? = Person(name: "Bob");
 	print("created: \(bob)");
 	var laptop: Asset? = Asset(name: "Laptop", value: 1_500.0);
@@ -51,6 +55,7 @@ func allocationFunction2()
 
 	//The deinits are not called here if the owner var is not weak in the assets, since there are references between the assets and the person.
 	//If we set the owner reference to weak (weak var owner : Person?), the deinit is called on bob and then on the assets. The assest have no owner at that moment since that one is deallocated, this yields the follwoing result:
+	
 	/*
 	Prints:
 	created: Optional(Person(Bob))
@@ -63,9 +68,12 @@ func allocationFunction2()
 	*/
 }
 
-//weak reference in case of setting it ourself
+//weak reference in case of setting it ourself, will cause the ref count to be set to 0 while we would still like to use it (now bob is removed from the asset)
 func allocationFunction3()
 {
+	print("*****allocationFunction3()");
+
+	
 	var bob : Person? = Person(name: "Bob");
 	print("created: \(bob)");
 	var laptop: Asset? = Asset(name: "Laptop", value: 1_500.0);
@@ -89,10 +97,11 @@ func allocationFunction3()
 	Optional(Asset(Laptop), worth 1500.0, is not owned by anyone)
 	Asset(Laptop), worth 1500.0, is not owned by anyone is being deallocated
 	*/
+
 }
 
 
 //Call tests
-//allocationFunction1();
-//allocationFunction2();
+allocationFunction1();
+allocationFunction2();
 allocationFunction3();
