@@ -1,11 +1,11 @@
 # Personal findings and notes
 Please note that there are from a standpoint of a developer with .NET development experience and therefor might use terms related to .NET or use comparisons to .NET.
 
-## IDE
+### IDE
 - When you want to view details regarding a var, you can use alt-click (described as option-click in the book), this will show a popout with information about the variable (like the type).
 - In the menu Help -> Documentation and API reference you can find details regarding the language and libraries.
 
-## General
+### General
 - For readability numeric values can be split with a 1000 separator (_) -> 9_001
 - Naming conventions seem to prefer lowerCamelCase (e.g. enum values, struct properties) 
 - Classes and structs allow nesting of other class, struct, enum items
@@ -13,6 +13,7 @@ Please note that there are from a standpoint of a developer with .NET developmen
 - Crash and burn can be done with fatalError("Errmsg")
 - If you are sure the return type is not nil (even if the type return is nullable), you can add a ! to the end of the call:
 var myVar : MyType = MyType()!; //In case MyType returns MyType? through a failable init
+- The ! operator on nullables can be used like the .Value in .NET, this will force the element to use the value of the optional instead of the optional (like .NET this yields an error if the type IS nil)
 - guard statements are used like asserst, but I am still not sure why I should do:
 ```swift
     guard pop > 0 else { return nil}
@@ -62,7 +63,7 @@ var myVar : MyType = MyType()!; //In case MyType returns MyType? through a faila
 - Extensions with default implementations can yield "confusing" results if there is an extensions on a class and a child element also uses the same variable name. Swift will yield the implementation belonging to the type you have at hand at that moment. If we type the element as the parent, the parent part is shown, if we type the var as the child the child logic is used. This is kinda similar to the .NET working of explicit interfaces and the use of new (instead of override), .NET will also call the function related to the type at hand. The book uses an example with a var using a getter (string compose) in the parent and a simple string var in the child.
 
 
-## Exception Handling
+### Exception Handling
 - Exceptions are called Errors (inheriting from Error) and are upped by throw xxx()
 - Like Java, you need to indicate that a function can throw an exception func myFunc() throws -> returnType. Throw functions need to throw themselves OR have the error handling in place.
 - Exception catching via do { try throwingFunction(); } catch {} //Note the do block and the try before the failing function. 
@@ -77,7 +78,7 @@ var myVar : MyType = MyType()!; //In case MyType returns MyType? through a faila
     guard let myVar = try? codeThatCanThrow() else {}
 - The catch { } is required since the exception system requires you to be exhaustive when catching, thus having a case for a catch all is required (even if you think you catched all thrown types) 
 
-## Protocols (similar to Interfaces)
+### Protocols (similar to Interfaces)
 - Interfaces are called Protocols, inheritance is like regular inheritance (x : y), multiple protocols can be implemented
 - mutating is part of the protocol description for struct items that mutate the state (so the protocol needs to flag the element as mutating)
 - Protocols cannot be made generic (unlike the interface equivalent in .NET which is able to be generic), however there is an option using associated type. Associated types can constraints like generics by having : and parent after the name (Element : InheritFromThisClass)
@@ -104,7 +105,7 @@ var myVar : MyType = MyType()!; //In case MyType returns MyType? through a faila
 
 
 
-## Enumerators
+### Enumerators
 - Enums are not inheriting from any type by default (unlike .net which inherits from int by default)
 - Enums funcs are by default immutable, however you can enalbe this by flagging the function as mutating
 - Enums can do a whole lot more then we are used to. In Swift they can have functions, but also different values (like when working with shapes)
@@ -121,7 +122,7 @@ var myVar : MyType = MyType()!; //In case MyType returns MyType? through a faila
     }
 ```
 
-## Struct
+### Struct
 - Structs are initialized by StructName(). The new operator cannot be used.
 - Struct funcs are by default not allowed to mutate data, like the enums they need to be flagged as mutating
 - Mutating functions on structs can be captured in a variable by using the let structFunc = structname.function. The captured function can be fed a struct of the own type and that function can be called again:
@@ -144,7 +145,7 @@ var myVar : MyType = MyType()!; //In case MyType returns MyType? through a faila
 	}
 ```
 
-## Classes
+### Classes
 - No mandatory access modifiers (public/private/etc needed) -> Default behavior is internal
 - Functions are overriden by adding an override to the function
 - Calls to the parent class are done through super.[call]
@@ -172,7 +173,7 @@ var myVar : MyType = MyType()!; //In case MyType returns MyType? through a faila
 - Chaining constructors (calling each other) all need to be failable if the parent is failing
 - The self init needs to be called before setting self.var in the init function (super can be called whenever)
 
-## Functional aspects
+### Functional aspects
 - Function returns can be written as:
 ```swift    
     return
@@ -183,7 +184,7 @@ var myVar : MyType = MyType()!; //In case MyType returns MyType? through a faila
 ```
  which will return a function taking a string argument and returning a string
 
-## Properties and variables
+### Properties and variables
 * Lazy properties are properties that are set when called (not on init of the object/struct). This will set the property once (and only once) if the property is called
 ```swift
     lazy var townSize : TownSize =
@@ -229,4 +230,14 @@ Set requires a paramnam, this will allow you to use names that make sense. The n
 		}	
 	} 
 ```
-* The willset however does not seem to check on the init, if I put 33 there, it will just work and put 33 there
+* The willset however does not seem to check on the init, if I put 33 there, it will just work and put 33 there\
+
+###Garbage collection (See GarbageTown example)
+* The deinit will be called if all references are lost to a certain instance
+* The deinit will not be called if there are circular references (Person has 0..* assets, Asset has 0..1 person). Setting one of the items to nill will not toggle the deinit. Even if you reset the person and the asset var (the temporary one created to insert into the person), since the reference is still in the original person the count stays > 0. This is due to the strong reference principle in Swift. By adding a ref in the asset to the person, the person reference count will be incremented with 1 (meaning that if the main var is deallocated, the counter still > 0)
+* In swift you can flag a reference as weak, meaning this will not increment the count. In the asset/person case, the asset will have a weak var to the person since we do not want to keep the assets alive if the person is deallocated (due to the 0..1 relation between asset and person).
+```swift
+    weak var owner : Person?;
+```
+* weak references can only be var and is always optional (to allow setting nil and deallocate)
+* Be aware that if you set references yourself (so manually assigning the owner to the asset), the the owner is nilled at the moment the var of the owner is set to nil (since the reference count = 0 when deallocating that one), this might yield surprising results if you are not expecting this. Exposing the weak references therefor might not always be desirable.
