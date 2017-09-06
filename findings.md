@@ -31,7 +31,7 @@ var myVar : MyType = MyType()!; //In case MyType returns MyType? through a fail-
 - while let nextCharacter = functionThatReturnsItems() -> This will run while the return is not nil, returning nil will terminate, great for iterators (or everything else with next(), pop(), whatever)
 - Ranges also work with other stuff (like strings: case "0" ... "9":)
 - In case of namespace conflicts (naming a var similar to a Swift var) can be fixed by explicitly use the Swift. namespace (like Swift.Error)
-- Type aliasses can be used as replacements for base types, by saying typealias MyAlias = Double, you are allowed to use MyAlias as identifier instead of double, unlike inheriting from double this allows you to use double <-> myalias vars in any combination (from double -> myalias and v.v.)
+- Type aliases can be used as replacements for base types, by saying typealias MyAlias = Double, you are allowed to use MyAlias as identifier instead of double, unlike inheriting from double this allows you to use double <-> myalias vars in any combination (from double -> myalias and v.v.)
 - You can extend known types through:
 ```swift
     extension Velocity
@@ -66,6 +66,8 @@ var myVar : MyType = MyType()!; //In case MyType returns MyType? through a fail-
     el?.functionToCall() { nw in print("Value of NW: \(nw)"); };
     el?.functionToCall(callFunc: { nw in print("Value of NW: \(nw)"); });
 ```
+- Operator overloading is done by creating a static func OPERATOR(left: type, right: type)  (e.g. static func ==(left: element, right: element) -> Bool)
+- The way the == works is called infix (placing the operator between 2 items)
 
 ### Exception Handling
 - Exceptions are called Errors (inheriting from Error) and are upped by throw xxx()
@@ -307,3 +309,52 @@ Set requires a paramnam, this will allow you to use names that make sense. The n
 		accountant.netWorthChangedHandler = handler; //The handler is escaping (not called directly), this requires explicit flagging of the handler property as escaping
 	}
 ```
+
+###Equality, comparison and operators
+- Self created enums/classes are not comparable, comparing these with == will yield a compiler error. You'll need to implement the Equality protocol, which prescribes a static func == with 2 parameters (left and right hand side), returning a Bool 
+```swift
+    class Point : Equatable
+    {
+        static func ==(left : Point, right: Point) -> Bool //Naming of the vars is free
+        {
+            return left.x == right.x && left.y == right.y;
+        }
+    }
+```
+- Having the == implemented, will also create the != for you
+- Being able to have the greater-than and smaller-than, you'll need to implement the Comparable protocol, which requires you to implement the smaller-than operator. Unlike .NET the comparable works on a bool result, where IComparable in .NET returns an integer regarding the comparable result (neg is left is greater, 0 if equal, pos is right is greater)
+```swift
+    class Point: Comparable
+    {
+        static func <(left: Point, right: Point) -> Bool
+	    {
+	    	return left.x < right.x && left.y < right.y;
+    	}
+    }
+```
+- For comparison you only need to have the equal and smaller-than operator implemented, the others are inferred by Swift
+- Comparable requires the Equatable protocol to also be defined (the Comparable protocol inherits the Equatable protocol)
+- You can have your own operators defined as infix operator OPERATORSTRING and then implementing a function with that operator.
+```swift
+    infix operator +++; //Must be in file scope
+    
+    class Person
+    {
+        static func +++(l: Person, r: Person)
+	    {
+	    	l.spouse = r;
+		    r.spouse = l;
+	    }
+    }
+
+    //Or:
+    func +++(l: Person, r: Person)
+	{
+		l.spouse = r;
+		r.spouse = l;
+	}
+```
+- The implementation of the operator can be in the class (as static) or in file scope for a certain class/enum (having them both yields an exception regarding the item being ambiguous)
+- Operators exist in PrecedenceGroups to define which one needs to go before the other (this concept I am not going to explore for now)
+- The characters to be used in operators are limited to a set of mathematical operators, so no emojiing here
+- Guidelines advice against the use of non trivial operators to prevent readability issues
