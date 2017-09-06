@@ -36,6 +36,20 @@ class Person : CustomStringConvertible
 		assets.append(asset);
 	}
 	
+	func takeOwnershipCompletion(of asset: Asset)
+	{
+		accountant.gainedWithCompletion(asset)
+		{
+			asset.owner = self;
+			assets.append(asset);
+		};
+	}
+	
+	func useNetWorthChangedHandler(handler : @escaping (Double) -> Void)
+	{
+		accountant.netWorthChangedHandler = handler;
+	}
+	
 	func netWorthChanged(to newWorth : Double)
 	{
 		print("The net worth of \(self) is now estimated at \(newWorth)");

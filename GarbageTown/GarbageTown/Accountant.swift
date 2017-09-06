@@ -24,4 +24,10 @@ class Accountant
 	{
 		netWorth += asset.value;
 	}
+	
+	func gainedWithCompletion(_ asset: Asset, completion: () -> Void)
+	{
+		netWorth += asset.value;
+		completion();
+	}
 }

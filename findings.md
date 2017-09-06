@@ -61,7 +61,11 @@ var myVar : MyType = MyType()!; //In case MyType returns MyType? through a fail-
 - Through extensions you can set default (for example for the description), which can be overridden in implementor classes or extensions on those classes. The most specific item will be called
 - Extensions cannot redefine items set in the class itself (if we have description in the class, we cannot use an extension to redefine this element), implementing more-specific implementations (if the parent has a definition) is allowed
 - Extensions with default implementations can yield "confusing" results if there is an extensions on a class and a child element also uses the same variable name. Swift will yield the implementation belonging to the type you have at hand at that moment. If we type the element as the parent, the parent part is shown, if we type the var as the child the child logic is used. This is kinda similar to the .NET working of explicit interfaces and the use of new (instead of override), .NET will also call the function related to the type at hand. The book uses an example with a var using a getter (string compose) in the parent and a simple string var in the child.
-
+- If the last parameter in the parameters is a function we can use 2 notations (in this example the param is (Double) -> Void):
+```swift
+    el?.functionToCall() { nw in print("Value of NW: \(nw)"); };
+    el?.functionToCall(callFunc: { nw in print("Value of NW: \(nw)"); });
+```
 
 ### Exception Handling
 - Exceptions are called Errors (inheriting from Error) and are upped by throw xxx()
@@ -185,13 +189,13 @@ var myVar : MyType = MyType()!; //In case MyType returns MyType? through a fail-
  which will return a function taking a string argument and returning a string
 
 ### Properties and variables
-* Lazy properties are properties that are set when called (not on init of the object/struct). This will set the property once (and only once) if the property is called
+- Lazy properties are properties that are set when called (not on init of the object/struct). This will set the property once (and only once) if the property is called
 ```swift
     lazy var townSize : TownSize =
 	{}(); //Note that the {} are required
 ```
-* The lazy makes the function using it mutating. Using this var from a non-mutating function in a struct will yield an compiler error.
-* Swift also allows get{} set{} logic, like .NET for properties
+- The lazy makes the function using it mutating. Using this var from a non-mutating function in a struct will yield an compiler error.
+- Swift also allows get{} set{} logic, like .NET for properties
 ```swift
     var prop : Type
     {
@@ -200,7 +204,7 @@ var myVar : MyType = MyType()!; //In case MyType returns MyType? through a fail-
     }
 ```
 Set requires a paramnam, this will allow you to use names that make sense. The notation of the set is a bit different due to the requirement of the parametername. Also note that the parameter does not require a type (is inferred from the property)
-* Properties support observer functions that are attached to the property and are fired when the property is changed (or at least the set is called, it doesnt check if the value is really changing)
+- Properties support observer functions that are attached to the property and are fired when the property is changed (or at least the set is called, it doesnt check if the value is really changing)
 ```swift
     var propName : Type = [xxxx]
     {
@@ -211,16 +215,16 @@ Set requires a paramnam, this will allow you to use names that make sense. The n
         }
     }
 ```
-* vars can be flagged as class, making them "static-y", the pattern used for the class var is the pattern for lazy eval:
+- vars can be flagged as class, making them "static-y", the pattern used for the class var is the pattern for lazy eval:
 ```swift    
     class var myVar : Type
     {
         return [xx];
     }
 ```
-* making vars readonly is done on the definition of the var
+- making vars readonly is done on the definition of the var
 	internal private(set) var myProperty = value; //this defines the property internal and the set private
-* Properties can have a willSet element in the definition to perform certain checks upon setting the value (unlike the didSet this is done before checking)
+- Properties can have a willSet element in the definition to perform certain checks upon setting the value (unlike the didSet this is done before checking)
 ```swift
 	var prop : Double
 	{
@@ -230,23 +234,24 @@ Set requires a paramnam, this will allow you to use names that make sense. The n
 		}	
 	} 
 ```
-* The willset however does not seem to check on the init, if I put 33 there, it will just work and put 33 there\
+- The willset however does not seem to check on the init, if I put 33 there, it will just work and put 33 there\
 
 ###Garbage collection (See GarbageTown example)
-* The deinit will be called if all references are lost to a certain instance
-* The deinit will not be called if there are circular references (Person has 0..* assets, Asset has 0..1 person). Setting one of the items to nil will not toggle the deinit. Even if you reset the person and the asset var (the temporary one created to insert into the person), since the reference is still in the original person the count stays > 0. This is due to the strong reference principle in Swift. By adding a ref in the asset to the person, the person reference count will be incremented with 1 (meaning that if the main var is deallocated, the counter still > 0)
-* In swift you can flag a reference as weak, meaning this will not increment the count. In the asset/person case, the asset will have a weak var to the person since we do not want to keep the assets alive if the person is deallocated (due to the 0..1 relation between asset and person).
+- The deinit will be called if all references are lost to a certain instance
+- The deinit will not be called if there are circular references (Person has 0..* assets, Asset has 0..1 person). Setting one of the items to nil will not toggle the deinit. Even if you reset the person and the asset var (the temporary one created to insert into the person), since the reference is still in the original person the count stays > 0. This is due to the strong reference principle in Swift. By adding a ref in the asset to the person, the person reference count will be incremented with 1 (meaning that if the main var is deallocated, the counter still > 0)
+- In swift you can flag a reference as weak, meaning this will not increment the count. In the asset/person case, the asset will have a weak var to the person since we do not want to keep the assets alive if the person is deallocated (due to the 0..1 relation between asset and person).
 ```swift
     weak var owner : Person?;
 ```
-* weak references can only be var and is always optional (to allow setting nil and deallocate)
-* Be aware that if you set references yourself (so manually assigning the owner to the asset), the the owner is nilled at the moment the var of the owner is set to nil (since the reference count = 0 when deallocating that one), this might yield surprising results if you are not expecting this. Exposing the weak references therefor might not always be desirable.
-* Please be aware that the self reference can also cause issues when used in a closure, this links self to the other object causing a circular reference.
+- weak references can only be var and is always optional (to allow setting nil and deallocate)
+- Be aware that if you set references yourself (so manually assigning the owner to the asset), the the owner is nilled at the moment the var of the owner is set to nil (since the reference count = 0 when deallocating that one), this might yield surprising results if you are not expecting this. Exposing the weak references therefor might not always be desirable.
+- Please be aware that the self reference can also cause issues when used in a closure, this links self to the other object causing a circular reference.
+- Reference count cannot be requested by hand (or at least not via a trivial way), this is partially due to Swift being allowed to get creative with the counts and assign stuff when he likes. You can however use the isKnownUniquelyReferenced(item) function to see if you are the only one referencing elements at a given momen.
 
 ###Event handlers
-* You can use typealias to define a function signature to make events more readable
-* After defining the event alias you can make a variable of that type (and set it to nil if required)
-* The variable with the event type can be called as function (with a nil-propagation call)
+- You can use typealias to define a function signature to make events more readable
+- After defining the event alias you can make a variable of that type (and set it to nil if required)
+- The variable with the event type can be called as function (with a nil-propagation call)
 ```swift
     typealias NetWorthChanged = (Double) -> Void;
 	var netWorthChangedHandler: NetWorthChanged? = nil;
@@ -258,7 +263,7 @@ Set requires a paramnam, this will allow you to use names that make sense. The n
 		}
 	}
 ```
-* Assigning an event handler can be done by making an inline func (sample below sets the handler in the account var to a function having the nw variable for the double of the signature and calling the netWorthChanged in the class defining this handler)
+- Assigning an event handler can be done by making an inline func (sample below sets the handler in the account var to a function having the nw variable for the double of the signature and calling the netWorthChanged in the class defining this handler)
 ```swift
     accountant.netWorthChangedHandler =
     {
@@ -267,11 +272,11 @@ Set requires a paramnam, this will allow you to use names that make sense. The n
         return;
     };
 ```
-* Regarding the use of self in the event handler, see the closures chapter
+- Regarding the use of self in the event handler, see the closures chapter
 
 
 ###Closures
-* When using self in a closure one can use [weak self] in the signature of the function. Please note that the self then becomes option and needs null-propagation to be used. This principle is referred to as "Capture List"
+- When using self in a closure one can use [weak self] in the signature of the function. Please note that the self then becomes option and needs null-propagation to be used. This principle is referred to as "Capture List"
 ```swift
     accountant.netWorthChangedHandler =
     {
@@ -280,5 +285,25 @@ Set requires a paramnam, this will allow you to use names that make sense. The n
         return;
     }
 ```
-* Closures can be used after the function is done, therefor the reference is kept to self (or any other element wrapped in the closure). Examples of closures getting called are event handlers or async like structures. You provide a function to call, the system calls it when it feels like it. In most cases the function you sent your reference to is long-done and returned. This is called an escaping closure, the closure will escape the current flow/scope.
-* Swift supports 
+- Closures can be used after the function is done, therefor the reference is kept to self (or any other element wrapped in the closure). Examples of closures getting called are event handlers or async like structures. You provide a function to call, the system calls it when it feels like it. In most cases the function you sent your reference to is long-done and returned. This is called an escaping closure, the closure will escape the current flow/scope.
+- Swift supports completion functions that are called directly in the closure. There you are not required to flag self as weak. This also allows you to omit the self (otherwise the self will be required, otherwise an compiler error is shown).
+```swift
+    //Defined in the accountant:
+    func gainedWithCompletion(_ asset: Asset, completion: () -> Void)
+
+    //usage in the call:
+    accountant.gainedWithCompletion(asset) { /*Completion body, can work directly on self without requiring to use self.xxx */ };
+```
+- By default parameter function are handled as non escaping, if you try to feed this to code that IS escaping, the compiler will give an error:
+```swift
+    func useNetWorthChangedHandler(handler : (Double) -> Void)
+	{
+		accountant.netWorthChangedHandler = handler; //The handler is escaping (not called directly), this requires explicit flagging of the handler property as escaping
+	}
+
+
+    func useNetWorthChangedHandler(handler : @escaping (Double) -> Void)
+	{
+		accountant.netWorthChangedHandler = handler; //The handler is escaping (not called directly), this requires explicit flagging of the handler property as escaping
+	}
+```

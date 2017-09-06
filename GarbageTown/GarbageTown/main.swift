@@ -100,8 +100,46 @@ func allocationFunction3()
 
 }
 
+//Testing with completion functions (non escaping closures)
+func allocationFunction4()
+{
+	print("*****allocationFunction4()");
+	
+	var bob : Person? = Person(name: "Bob");
+	print("created: \(bob)");
+	var laptop: Asset? = Asset(name: "Laptop", value: 1_500.0);
+	var chair: Asset? = Asset(name: "Chair", value: 500);
+	
+	//The function is escaping, so we need to be aware we are not capturing items in the function
+	bob?.useNetWorthChangedHandler() { nw in print("Bob now is worth: \(nw)"); };
+	
+	bob?.takeOwnershipCompletion(of: laptop!);1
+	bob?.takeOwnershipCompletion(of: chair!);
+	
+	print(bob);
+	print(laptop);
+	bob = nil;
+	print(bob);
+	
+	//The deinits are not called here if the owner var is not weak in the assets, since there are references between the assets and the person.
+	//If we set the owner reference to weak (weak var owner : Person?), the deinit is called on bob and then on the assets. The assest have no owner at that moment since that one is deallocated, this yields the follwoing result:
+	
+	/*
+	Prints:
+	created: Optional(Person(Bob))
+	Optional(Person(Bob))
+	Optional(Asset(Laptop), worth 1500.0, owned by Person(Bob))
+	Person(Bob) is deallocated
+	nil
+	Asset(Chair), worth 500.0, is not owned by anyone is being deallocated
+	Asset(Laptop), worth 1500.0, is not owned by anyone is being deallocated
+	*/
+}
+
+
 
 //Call tests
 allocationFunction1();
 allocationFunction2();
 allocationFunction3();
+allocationFunction4();
