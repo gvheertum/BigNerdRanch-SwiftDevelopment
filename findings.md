@@ -68,6 +68,8 @@ var myVar : MyType = MyType()!; //In case MyType returns MyType? through a fail-
 ```
 - Operator overloading is done by creating a static func OPERATOR(left: type, right: type)  (e.g. static func ==(left: element, right: element) -> Bool)
 - The way the == works is called infix (placing the operator between 2 items)
+- The usage of @ elements in the code indicates attributes, these can be applied to many items like: properties, functions and input parameters
+- Next to optional properties you can have something like: var bla : String!, which is called a "implicitly-unwrapped optional String". The var can set as Optional, however every usage will be treated as explicit unwrap (bla.call is mapped to -> bla!.call).
 
 ### Exception Handling
 - Exceptions are called Errors (inheriting from Error) and are upped by throw xxx()
@@ -238,7 +240,7 @@ Set requires a paramnam, this will allow you to use names that make sense. The n
 ```
 - The willset however does not seem to check on the init, if I put 33 there, it will just work and put 33 there\
 
-###Garbage collection (See GarbageTown example)
+### Garbage collection (See GarbageTown example)
 - The deinit will be called if all references are lost to a certain instance
 - The deinit will not be called if there are circular references (Person has 0..* assets, Asset has 0..1 person). Setting one of the items to nil will not toggle the deinit. Even if you reset the person and the asset var (the temporary one created to insert into the person), since the reference is still in the original person the count stays > 0. This is due to the strong reference principle in Swift. By adding a ref in the asset to the person, the person reference count will be incremented with 1 (meaning that if the main var is deallocated, the counter still > 0)
 - In swift you can flag a reference as weak, meaning this will not increment the count. In the asset/person case, the asset will have a weak var to the person since we do not want to keep the assets alive if the person is deallocated (due to the 0..1 relation between asset and person).
@@ -250,7 +252,7 @@ Set requires a paramnam, this will allow you to use names that make sense. The n
 - Please be aware that the self reference can also cause issues when used in a closure, this links self to the other object causing a circular reference.
 - Reference count cannot be requested by hand (or at least not via a trivial way), this is partially due to Swift being allowed to get creative with the counts and assign stuff when he likes. You can however use the isKnownUniquelyReferenced(item) function to see if you are the only one referencing elements at a given momen.
 
-###Event handlers
+### Event handlers
 - You can use typealias to define a function signature to make events more readable
 - After defining the event alias you can make a variable of that type (and set it to nil if required)
 - The variable with the event type can be called as function (with a nil-propagation call)
@@ -277,7 +279,7 @@ Set requires a paramnam, this will allow you to use names that make sense. The n
 - Regarding the use of self in the event handler, see the closures chapter
 
 
-###Closures
+### Closures
 - When using self in a closure one can use [weak self] in the signature of the function. Please note that the self then becomes option and needs null-propagation to be used. This principle is referred to as "Capture List"
 ```swift
     accountant.netWorthChangedHandler =
@@ -358,3 +360,16 @@ Set requires a paramnam, this will allow you to use names that make sense. The n
 - Operators exist in PrecedenceGroups to define which one needs to go before the other (this concept I am not going to explore for now)
 - The characters to be used in operators are limited to a set of mathematical operators, so no emojiing here
 - Guidelines advice against the use of non trivial operators to prevent readability issues
+
+### Application development for Mac/iOS
+- Working with Objective-C libraries is called bridging
+- The basic working of application for Mac/iOS is the MVC pattern
+- @IBAction and @IBOutlet are attributes for elements in the applications
+- IB stands for InterfaceBuilder
+- Flagging items with IB attributes, allows you to use them in the interface builder
+- Layout pinning can be done with control-drag on a control and pin them to something you want to link an aspect to (this will draw lines like WPF does when "pinning" elements) - you can also link to items to match base line etc (like buttons next to each other)
+- Connecting elements-events (target-action pair) from the form to the controller can be done by control-dragging the element to the controller icon at the top of the window (the square button). This will link the target event to the action in the controller. This works on @IBAction elements
+- Outlets work the other way around, you drag the controller to the element, this allows you to pick an IBOutlet property to link to a target
+- Outlets need to be optional (regular (?) or explicitly unwrapped (!))
+- Getting text from a NSTextView is done via the .string property (took me a while, expected value or text or something in that line)
+- When making a document based app, you need to implement the document class (inherting from NSDocument) and implement the save functions, otherwise the app will crash when trying to save (the document app auto-creates the save options)
