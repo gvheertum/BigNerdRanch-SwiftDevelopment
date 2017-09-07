@@ -10,11 +10,6 @@ import Cocoa
 
 class Document: NSDocument {
 
-	override init() {
-	    super.init()
-		// Add your subclass-specific initialization here.
-	}
-
 	override class func autosavesInPlace() -> Bool {
 		return true
 	}

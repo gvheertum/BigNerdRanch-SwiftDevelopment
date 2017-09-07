@@ -70,6 +70,7 @@ var myVar : MyType = MyType()!; //In case MyType returns MyType? through a fail-
 - The way the == works is called infix (placing the operator between 2 items)
 - The usage of @ elements in the code indicates attributes, these can be applied to many items like: properties, functions and input parameters
 - Next to optional properties you can have something like: var bla : String!, which is called a "implicitly-unwrapped optional String". The var can set as Optional, however every usage will be treated as explicit unwrap (bla.call is mapped to -> bla!.call).
+- Casting in Swift is done with the ```let varOfNewType = varOfOldType as TypeWeWant``` when using as? we get a nil if the cast fails (so the basic xxx as yyy in .NET working) 
 
 ### Exception Handling
 - Exceptions are called Errors (inheriting from Error) and are upped by throw xxx()
