@@ -8,8 +8,21 @@
 
 import Cocoa
 
-class Document: NSDocument {
-
+class Document: NSDocument
+{
+	enum Error : Swift.Error, LocalizedError
+	{
+		case UTF8Encoding
+		var failureReason : String?
+		{
+			switch self
+			{
+				case .UTF8Encoding: return "File cannot be encoded in UTF-8";
+			}
+		}
+	}
+	
+	
 	override class func autosavesInPlace() -> Bool {
 		return true
 	}
@@ -18,13 +31,16 @@ class Document: NSDocument {
 		// Returns the Storyboard that contains your Document window.
 		let storyboard = NSStoryboard(name: "Main", bundle: nil)
 		let windowController = storyboard.instantiateController(withIdentifier: "Document Window Controller") as! NSWindowController
+		
 		self.addWindowController(windowController)
 	}
 
 	override func data(ofType typeName: String) throws -> Data {
-		// Insert code here to write your document to data of the specified type. If outError != nil, ensure that you create and set an appropriate error when returning nil.
-		// You can also choose to override fileWrapperOfType:error:, writeToURL:ofType:error:, or writeToURL:ofType:forSaveOperation:originalContentsURL:error: instead.
-		throw NSError(domain: NSOSStatusErrorDomain, code: unimpErr, userInfo: nil)
+		let wController = windowControllers.first!;
+		let vController = wController.contentViewController as! ViewController;
+		let contents = vController.textView.string ?? "";
+		guard let data = contents.data(using: .utf8) else { throw Document.Error.UTF8Encoding }
+		return data;
 	}
 
 	override func read(from data: Data, ofType typeName: String) throws {

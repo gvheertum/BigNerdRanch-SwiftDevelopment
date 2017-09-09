@@ -70,10 +70,12 @@ var myVar : MyType = MyType()!; //In case MyType returns MyType? through a fail-
 - The way the == works is called infix (placing the operator between 2 items)
 - The usage of @ elements in the code indicates attributes, these can be applied to many items like: properties, functions and input parameters
 - Next to optional properties you can have something like: var bla : String!, which is called a "implicitly-unwrapped optional String". The var can set as Optional, however every usage will be treated as explicit unwrap (bla.call is mapped to -> bla!.call).
-- Casting in Swift is done with the ```let varOfNewType = varOfOldType as TypeWeWant``` when using as? we get a nil if the cast fails (so the basic xxx as yyy in .NET working) 
+- Casting in Swift is done with the ```let varOfNewType = varOfOldType as TypeWeWant``` when using as? we get a nil if the cast fails (so the basic xxx as yyy in .NET working), in this case the var is of type TypeWeWant? (Optional)
+- There is also the option to use as! for casting, hthis will directly unwrap the result, so the resuslt is TypeWeWant
+- Using the as (without ? or !), will only work for types that the compiler can guarantee
 
 ### Exception Handling
-- Exceptions are called Errors (inheriting from Error) and are upped by throw xxx()
+- Exceptions are called Errors (inheriting from Swift.Error) and are upped by throw xxx()
 - Like Java, you need to indicate that a function can throw an exception func myFunc() throws -> returnType. Throw functions need to throw themselves OR have the error handling in place.
 - Exception catching via do { try throwingFunction(); } catch {} //Note the do block and the try before the failing function. 
 - The try is required to provide in before the function call to a throwable
@@ -86,6 +88,7 @@ var myVar : MyType = MyType()!; //In case MyType returns MyType? through a fail-
 - Guard and try? can be used to do an inline guard try block
     guard let myVar = try? codeThatCanThrow() else {}
 - The catch { } is required since the exception system requires you to be exhaustive when catching, thus having a case for a catch all is required (even if you think you catched all thrown types) 
+- Coding guidelines suggest inheriting from LocalizedError to be able to use more user-friendly messages, this will require you to implement the failureReason string property
 
 ### Protocols (similar to Interfaces)
 - Interfaces are called Protocols, inheritance is like regular inheritance (x : y), multiple protocols can be implemented
@@ -128,6 +131,22 @@ var myVar : MyType = MyType()!; //In case MyType returns MyType? through a fail-
     {
         case None
         case Some(Wrapped)
+    }
+```
+- Functions in enumerators can refer the it's own instance
+```swift
+    enum MyEnum
+    {
+        case myCase;
+        case myCase2;
+        var caseDescription : String
+        {
+            switch self
+            {
+                .myCase: return "Case 1";
+                .myCase2: return "Case 2";
+            }
+        }
     }
 ```
 
@@ -374,3 +393,5 @@ Set requires a paramnam, this will allow you to use names that make sense. The n
 - Outlets need to be optional (regular (?) or explicitly unwrapped (!))
 - Getting text from a NSTextView is done via the .string property (took me a while, expected value or text or something in that line)
 - When making a document based app, you need to implement the document class (inherting from NSDocument) and implement the save functions, otherwise the app will crash when trying to save (the document app auto-creates the save options)
+- The document-controller construction in the VocalTextEdit does not seem to be the best way to work with this, since I am not sure if the viewcontroller should be responsible, however this could be how the frontend pattern for these type of apps is defined.
+- Document layout applications have a function defined in the Document class that allows you to return "data". To get data you can use for example: ```contents.data(using: .utf8)``` (where content is a String). This will create a Data object to be used by the document class (and it's callers).
