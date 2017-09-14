@@ -151,6 +151,7 @@ var myVar : MyType = MyType()!; //In case MyType returns MyType? through a fail-
         }
     }
 ```
+- Protocols can have optional functions, which are not required to be implemented when extendiing the protocol
 
 ### Struct
 - Structs are initialized by StructName(). The new operator cannot be used.
@@ -402,3 +403,11 @@ Set requires a paramnam, this will allow you to use names that make sense. The n
 - You can tap into events in other items by checking if there are delegates availaibe. The delegates often can be assigned an implementation of a certain protocol like the NSSpeechSynthesizerDelegate in NSSpeechSynthesizer.
 - When linking elements to eachother or the form (for positioning), be aware that if you have multiple items, the control might be placed in an unexpected way. You can select the "guide" and delete it (it will not "reset" if you drag a new similar one).
 - The documentation of controls needs to be really read well, for example the protocol for observing the speech synth is not what you would expect as non-native swift developer. Also the working of the progress bar (what to assing) might seem strange at first.
+
+### iOS development
+- Similar pattern as MacOS applications, ViewController with outlets and actions (IBOutlet IBAction).
+- Namespacing of screen elements is UIxxx where MacOS uses NSxxx.
+- In the designer you can use content-hugging for priority in element growing.
+- There is an option to fix issues in a frame (bottom right icon)
+- Naming of elements in the controls differs from the MacOS versions, the textfield now has a property text instead of string
+- Table views accept collections that adhere to the UITableViewDataSource protocol (by direct implementation or by extension)
