@@ -411,3 +411,33 @@ Set requires a paramnam, this will allow you to use names that make sense. The n
 - There is an option to fix issues in a frame (bottom right icon)
 - Naming of elements in the controls differs from the MacOS versions, the textfield now has a property text instead of string
 - Table views accept collections that adhere to the UITableViewDataSource protocol (by direct implementation or by extension)
+- iOS apps can write data to their sandbox, this is based on URL items and can be requested from the FileManager
+```swift
+private let fileUrl : URL =
+	{
+		let documentDirUrls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask);
+		let documentDirUrl = documentDirUrls.first!;
+		return documentDirUrl.appendingPathComponent("todolist.items");
+	}();
+```
+- If you push data to an NSArray you can easily read and write it. Regular array's are castable to an NSArray.
+```swift
+func saveItems()
+{
+    let itemsArray = items as NSArray;
+    print("writing to: \(fileUrl)");
+    if(!itemsArray.write(to: fileUrl, atomically: true))
+    {
+        print("Uh oh, writing is broken :(");
+    }
+}
+
+func loadItems()
+{
+    if let itemsArray = NSArray(contentsOf: fileUrl) as? [String]
+    {
+        items = itemsArray;
+    }
+}
+```
+- Classes used should inherit from NSObject (this is not by default, unlike .NET auto-inheriting from Object)

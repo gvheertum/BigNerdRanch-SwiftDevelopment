@@ -11,11 +11,43 @@ import UIKit
 class TodoList: NSObject
 {
 
+	private let fileUrl : URL =
+	{
+		let documentDirUrls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask);
+		let documentDirUrl = documentDirUrls.first!;
+		return documentDirUrl.appendingPathComponent("todolist.items");
+	}();
+	
 	fileprivate var items: [String] = [];
 	
 	func add(_ item : String)
 	{
 		self.items.append(item);
+		saveItems();
+	}
+	
+	func saveItems()
+	{
+		let itemsArray = items as NSArray;
+		print("writing to: \(fileUrl)");
+		if(!itemsArray.write(to: fileUrl, atomically: true))
+		{
+			print("Uh oh, writing is broken :(");
+		}
+	}
+	
+	func loadItems()
+	{
+		if let itemsArray = NSArray(contentsOf: fileUrl) as? [String]
+		{
+			items = itemsArray;
+		}
+	}
+	
+	override init()
+	{
+		super.init();
+		loadItems();
 	}
 }
 
