@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="12121"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -755,6 +754,8 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="btnSpeak" destination="w66-93-YRO" id="4yf-Bb-aRp"/>
+                        <outlet property="btnStop" destination="rY9-Ly-rr0" id="lrf-Ob-0XE"/>
                         <outlet property="textView" destination="afH-xc-L56" id="lD3-YS-kun"/>
                     </connections>
                 </viewController>

@@ -36,7 +36,7 @@ class Document: NSDocument
 		let windowController = storyboard.instantiateController(withIdentifier: "Document Window Controller") as! NSWindowController
 		
 		(windowController.contentViewController as! ViewController).contents = contents;
-		
+		(windowController.contentViewController as! ViewController).toggleButtons(isSpeaking: false);
 		self.addWindowController(windowController)
 	}
 
