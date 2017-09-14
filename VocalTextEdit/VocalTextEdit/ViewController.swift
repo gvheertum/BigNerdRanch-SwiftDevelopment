@@ -18,6 +18,12 @@ class ViewController: NSViewController
 		
 	}
 	
+	var contents : String?
+	{
+		get { return textView.string; }
+		set { textView.string = newValue; }
+	}
+	
 	@IBAction func speakButtonClicked(_ sender: NSButton)
 	{
 		var speakText: String = textView.string ?? "No text input...";
