@@ -713,17 +713,17 @@
                                     <action selector="stopButtonClicked:" target="5gI-5U-AMq" id="U4m-gV-Nce"/>
                                 </connections>
                             </button>
-                            <scrollView ambiguous="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dKm-Fp-NLP">
-                                <rect key="frame" x="0.0" y="-48" width="480" height="270"/>
+                            <scrollView ambiguous="YES" misplaced="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dKm-Fp-NLP">
+                                <rect key="frame" x="0.0" y="-48" width="480" height="282"/>
                                 <clipView key="contentView" id="p07-0i-mIe">
-                                    <rect key="frame" x="1" y="1" width="463" height="268"/>
+                                    <rect key="frame" x="1" y="1" width="463" height="280"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textView importsGraphics="NO" usesFontPanel="YES" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="afH-xc-L56">
-                                            <rect key="frame" x="0.0" y="0.0" width="463" height="268"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="463" height="280"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <size key="minSize" width="463" height="268"/>
+                                            <size key="minSize" width="463" height="280"/>
                                             <size key="maxSize" width="494" height="10000000"/>
                                             <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                         </textView>
@@ -735,18 +735,23 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="31x-TI-cad">
-                                    <rect key="frame" x="464" y="1" width="15" height="268"/>
+                                    <rect key="frame" x="464" y="1" width="15" height="280"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
+                            <progressIndicator wantsLayer="YES" ambiguous="YES" maxValue="100" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="LUR-69-Zb0">
+                                <rect key="frame" x="6" y="241" width="322" height="20"/>
+                            </progressIndicator>
                         </subviews>
                         <constraints>
                             <constraint firstItem="rY9-Ly-rr0" firstAttribute="top" secondItem="ERx-hH-rdd" secondAttribute="top" constant="7" id="3Ch-2w-bEq"/>
                             <constraint firstItem="dKm-Fp-NLP" firstAttribute="height" secondItem="ERx-hH-rdd" secondAttribute="height" id="FzZ-HY-Di2"/>
                             <constraint firstItem="rY9-Ly-rr0" firstAttribute="baseline" secondItem="w66-93-YRO" secondAttribute="baseline" id="I49-8D-Hr4"/>
                             <constraint firstItem="w66-93-YRO" firstAttribute="top" secondItem="ERx-hH-rdd" secondAttribute="top" constant="7" id="NbJ-Vb-XWi"/>
+                            <constraint firstItem="LUR-69-Zb0" firstAttribute="leading" secondItem="ERx-hH-rdd" secondAttribute="leading" constant="6" id="POk-bv-hKu"/>
                             <constraint firstAttribute="centerY" secondItem="TyV-c9-G0C" secondAttribute="centerY" id="Rxv-Yd-F43"/>
                             <constraint firstAttribute="centerX" secondItem="TyV-c9-G0C" secondAttribute="centerX" id="Zn4-Y4-lbg"/>
+                            <constraint firstAttribute="trailing" secondItem="LUR-69-Zb0" secondAttribute="trailing" constant="152" id="jd3-Ne-OUX"/>
                             <constraint firstItem="dKm-Fp-NLP" firstAttribute="top" secondItem="ERx-hH-rdd" secondAttribute="top" constant="48" id="nro-a5-ajD"/>
                             <constraint firstItem="dKm-Fp-NLP" firstAttribute="width" secondItem="ERx-hH-rdd" secondAttribute="width" id="p3i-Oy-MRc"/>
                             <constraint firstAttribute="trailing" secondItem="w66-93-YRO" secondAttribute="trailing" constant="7" id="smO-1d-lvG"/>
@@ -756,6 +761,7 @@
                     <connections>
                         <outlet property="btnSpeak" destination="w66-93-YRO" id="4yf-Bb-aRp"/>
                         <outlet property="btnStop" destination="rY9-Ly-rr0" id="lrf-Ob-0XE"/>
+                        <outlet property="pBar" destination="LUR-69-Zb0" id="fBW-O4-tWF"/>
                         <outlet property="textView" destination="afH-xc-L56" id="lD3-YS-kun"/>
                     </connections>
                 </viewController>

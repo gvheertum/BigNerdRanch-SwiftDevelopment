@@ -14,6 +14,7 @@ class ViewController: NSViewController, NSSpeechSynthesizerDelegate
 	@IBOutlet var textView : NSTextView!; //Why is there an exlamation mark here?
 	@IBOutlet var btnSpeak : NSButton!;
 	@IBOutlet var btnStop: NSButton!;
+	@IBOutlet var pBar: NSProgressIndicator!;
 	
 	@IBAction func byebye(_ sender: Any)
 	{
@@ -33,14 +34,21 @@ class ViewController: NSViewController, NSSpeechSynthesizerDelegate
 		
 		speechSynth.delegate = self;
 		speechSynth.startSpeaking(speakText);
-		
+		pBar.doubleValue = 0;
 		toggleButtons(isSpeaking: true);
 	}
 	
 	func speechSynthesizer(_ sender: NSSpeechSynthesizer, didFinishSpeaking finishedSpeaking: Bool)
 	{
-		print("Synth finished? \(finishedSpeaking)");
-		toggleButtons(isSpeaking: !finishedSpeaking); //This is only called when speaking
+		//This is also called when the synth is stopped, but then it's alled with the finishedSpeaking set to false
+		toggleButtons(isSpeaking: false);
+	}
+	
+	func speechSynthesizer(_ sender: NSSpeechSynthesizer, willSpeakWord characterRange: NSRange, of string: String)
+	{
+		var percentage : Double = (Double(characterRange.location) / Double(string.characters.count)) * 100;
+		print("Synth completion: \(percentage)");
+		pBar.doubleValue = percentage;
 	}
 	
 	func toggleButtons(isSpeaking: Bool)
@@ -54,6 +62,7 @@ class ViewController: NSViewController, NSSpeechSynthesizerDelegate
 		print("The stop button was clicked");
 		speechSynth.stopSpeaking();
 		toggleButtons(isSpeaking: false);
+		pBar.doubleValue = 0;
 	}
 	
 
