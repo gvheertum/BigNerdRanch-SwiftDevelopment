@@ -35,6 +35,7 @@ class ViewController: UIViewController {
 		todoList.add(todoItem);
 		//Tell the tableview we changed
 		tableView.reloadData();
+		textField.text = "";
 	}
 
 

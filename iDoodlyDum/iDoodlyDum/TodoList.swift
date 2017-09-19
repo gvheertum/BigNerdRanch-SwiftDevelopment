@@ -22,6 +22,7 @@ class TodoList: NSObject
 	
 	func add(_ item : String)
 	{
+		if(item.characters.count <= 0) { return; }
 		self.items.append(item);
 		saveItems();
 	}
