@@ -441,3 +441,14 @@ func loadItems()
 }
 ```
 - Classes used should inherit from NSObject (this is not by default, unlike .NET auto-inheriting from Object)
+- When writing delegate classes you might encounter an error telling you that the protocol is not implemented correctly:
+```Class does not conform NSObjectProtocol```, this is due to classes not inheriting NSObject by default in swift. A correct inheritance should include the protocol *and* NSObject: ```class TodoTableObserver : NSObject, UITableViewDelegate```
+- Also interesting, protocols with _ parameters need to be defined that way.
+```swift
+func tableView(_ view : UITableView, didSelectRowAt: IndexPath) {} //Will match
+func tableView(view : UITableView, didSelectRowAt: IndexPath) {} //Will NOT match (but gives a warning stating that the protocol is almost matched)
+```
+Note that the whole signature needs to match, including the return object (which is not always very clear in the top level documentation).
+- Function redirects to Objective-C can be done with attributes:
+```@objc(tableViewSettingsDidChange:notification:)``` (not tested, but found in the docs)
+- Found a "funny" thing when creating observer classes. If you put the class that inherits the delegate protocol in a variable in the view and set that variable as delegate on the control the observer works (and signals changes). If you say ```tableview.delegate = TableObserver();``` the observer will not work.

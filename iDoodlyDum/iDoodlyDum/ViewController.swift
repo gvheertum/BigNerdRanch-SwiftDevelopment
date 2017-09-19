@@ -8,19 +8,20 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITableViewDelegate
+{
 
 	@IBOutlet var textField : UITextField!;
 	@IBOutlet var tableView : UITableView!;
 	
 	var todoList : TodoList = TodoList();
-	
-	override func viewDidLoad() {
-		super.viewDidLoad()
+	var todoListHandler : TodoListTableHandler? = nil;
+	var todoTableObserver : TodoTableObserver? = nil;
+	override func viewDidLoad()
+	{
+		super.viewDidLoad();
 		
-		
-		tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell"); //Register cell type "Cell" and use the constructor delegate of the UITableViewCell
-		tableView.dataSource = todoList;
+		self.todoListHandler = TodoListTableHandler(tableView: tableView, todoList: todoList);
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -34,10 +35,9 @@ class ViewController: UIViewController {
 		print("Add button was pressed to add item: \(textField.text ?? "-")");
 		todoList.add(todoItem);
 		//Tell the tableview we changed
-		tableView.reloadData();
+		todoListHandler?.refresh();
 		textField.text = "";
 	}
-
-
 }
+
 

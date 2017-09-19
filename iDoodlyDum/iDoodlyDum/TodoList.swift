@@ -7,6 +7,49 @@
 //
 
 import UIKit
+protocol CanRefresh
+{
+	func refresh();
+}
+
+class TodoListTableHandler : NSObject, CanRefresh
+{
+	private var tableView : UITableView;
+	private var tableObserver : TodoTableObserver?;
+	init(tableView : UITableView, todoList: TodoList)
+	{
+		self.tableView = tableView;
+		self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell"); //Register cell type "Cell" and use the constructor delegate of the UITableViewCell
+		self.tableView.dataSource = todoList;
+		super.init();
+		
+		self.tableObserver = TodoTableObserver(todoList: todoList, refresher: self);
+		self.tableView.delegate = self.tableObserver;
+	}
+	
+	public func refresh()
+	{
+		self.tableView.reloadData();
+	}
+}
+
+class TodoTableObserver : NSObject, UITableViewDelegate
+{
+	let todoList : TodoList;
+	let refresher : CanRefresh;
+	public init(todoList : TodoList, refresher : CanRefresh)
+	{
+		self.todoList = todoList;
+		self.refresher = refresher;
+	}
+	
+	public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
+	{
+		print("Selected a row in othe thingy: \(indexPath)");
+		self.todoList.removeAt(indexPath.row);
+		refresher.refresh();
+	}
+}
 
 class TodoList: NSObject
 {
@@ -24,6 +67,12 @@ class TodoList: NSObject
 	{
 		if(item.characters.count <= 0) { return; }
 		self.items.append(item);
+		saveItems();
+	}
+	
+	func removeAt(_ itemIdx: Int)
+	{
+		self.items.remove(at: itemIdx);
 		saveItems();
 	}
 	
