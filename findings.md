@@ -74,6 +74,7 @@ var myVar : MyType = MyType()!; //In case MyType returns MyType? through a fail-
 - There is also the option to use as! for casting, hthis will directly unwrap the result, so the resuslt is TypeWeWant
 - Using the as (without ? or !), will only work for types that the compiler can guarantee
 - Like most languages swift allows you to use the parentheses to define "blocks" in the code (e.g. for casting: ```(windowController.contentViewController as! ViewController).textView.string = contents;```) 
+- Swift 4 offers the option to use a string over multiple lines, this is achieved by using tripple quotes. Indentation is matched with the indent of the closing quotes (so 2 tabs there means that 2 tabs are trimmed from the content), where the indent of the text in the block needs to be at-least at the level of the last quotes (so the indentation will not go negative).
 
 ### Exception Handling
 - Exceptions are called Errors (inheriting from Swift.Error) and are upped by throw xxx()
@@ -452,3 +453,13 @@ Note that the whole signature needs to match, including the return object (which
 - Function redirects to Objective-C can be done with attributes:
 ```@objc(tableViewSettingsDidChange:notification:)``` (not tested, but found in the docs)
 - Found a "funny" thing when creating observer classes. If you put the class that inherits the delegate protocol in a variable in the view and set that variable as delegate on the control the observer works (and signals changes). If you say ```tableview.delegate = TableObserver();``` the observer will not work.
+
+### Interop Objective-C and Swift
+- I skipped this part of the book, since I am in no way willing to go into Objective-C for now ;)
+- You can combine Swift and Objective-C in a single project
+- When creating Swift objects in a Objective-C project, XCode will give you the possibility to configure a bridging header.
+- When exposing to Objective-C you can only use classes. Structs are not visible to Objective-C.
+- If using swift in an Objective-C project with bridging, XCode will create a -Swift.h file for each swift file (so test.swift gets a test-Swift.h), these header files can be used in Objective-C files via the #import statement.
+- If you want to use Objective-C elements in Swift you need to include the header files of that code into swift by inserting ```#import "headerfile.h"``` in the bridging-header file, this will make the elements in the header file available to Swift. Swift will translate the Objective-C elements to Swift.
+
+#Book.finish()
