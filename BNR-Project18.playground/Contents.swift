@@ -37,7 +37,6 @@ let cdEqual = (c == d);
 let cLessThanD = c < d;
 let dGreaterThanD = d > c;
 
-
 // Bring your own operator
 // ****************************
 infix operator +++;
